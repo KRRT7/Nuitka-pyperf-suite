@@ -8,7 +8,7 @@ Author: Kumar Aditya
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-
+import asyncio
 import pyperf
 
 
@@ -42,6 +42,8 @@ async def bench_async_generators() -> None:
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "Benchmark async generators"
-    runner.bench_async_func("async_generators", bench_async_generators)
+    # runner = pyperf.Runner()
+    # runner.metadata["description"] = "Benchmark async generators"
+    # runner.bench_async_func("async_generators", bench_async_generators)
+
+    asyncio.run(bench_async_generators())

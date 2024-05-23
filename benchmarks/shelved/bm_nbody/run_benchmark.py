@@ -15,6 +15,7 @@ Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 
 import pyperf
+from time import perf_counter
 
 __contact__ = "collinwinter@google.com (Collin Winter)"
 DEFAULT_ITERATIONS = 20000
@@ -143,21 +144,22 @@ def add_cmdline_args(cmd, args):
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
-    runner.metadata["description"] = "n-body benchmark"
-    runner.argparser.add_argument(
-        "--iterations",
-        type=int,
-        default=DEFAULT_ITERATIONS,
-        help="Number of nbody advance() iterations "
-        "(default: %s)" % DEFAULT_ITERATIONS,
-    )
-    runner.argparser.add_argument(
-        "--reference",
-        type=str,
-        default=DEFAULT_REFERENCE,
-        help="nbody reference (default: %s)" % DEFAULT_REFERENCE,
-    )
+    # runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
+    # runner.metadata["description"] = "n-body benchmark"
+    # runner.argparser.add_argument(
+    #     "--iterations",
+    #     type=int,
+    #     default=DEFAULT_ITERATIONS,
+    #     help="Number of nbody advance() iterations "
+    #     "(default: %s)" % DEFAULT_ITERATIONS,
+    # )
+    # runner.argparser.add_argument(
+    #     "--reference",
+    #     type=str,
+    #     default=DEFAULT_REFERENCE,
+    #     help="nbody reference (default: %s)" % DEFAULT_REFERENCE,
+    # )
 
-    args = runner.parse_args()
-    runner.bench_time_func("nbody", bench_nbody, args.reference, args.iterations)
+    # args = runner.parse_args()
+    # runner.bench_time_func("nbody", bench_nbody, args.reference, args.iterations)
+    print(bench_nbody(50, "sun", 20000))
