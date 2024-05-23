@@ -3,6 +3,9 @@ from time import perf_counter
 import os
 from typing import Any
 from pathlib import Path
+import sys
+from subprocess import run
+from rich import print
 
 
 class Timer:
@@ -40,9 +43,13 @@ def temporary_directory_change(path: Path):
 
 
 def resolve_venv_path() -> Path:
-    venv_path = Path("venv")
+    resolved_path = Path(sys.executable).resolve()
+    venv_create = run(f"{resolved_path} -m venv venv")
+    if venv_create.returncode != 0:
+        raise RuntimeError("Failed to create venv")
 
-    if venv_path.exists():
-        return (venv_path / "Scripts" / "python.exe").resolve()
+    new_venv_path = Path("venv")
+    if new_venv_path.exists():
+        return (new_venv_path / "Scripts" / "python.exe").resolve()
     else:
-        raise FileNotFoundError("venv directory not found")
+        raise FileNotFoundError("Failed to create venv")
