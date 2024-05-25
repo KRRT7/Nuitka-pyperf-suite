@@ -1,10 +1,11 @@
-from Utilities import Timer, temporary_directory_change, resolve_venv_path
-import os
+from Utilities import temporary_directory_change, resolve_venv_path, run_benchmark
 from pathlib import Path
 import shutil
 from subprocess import run
+from rich import print
 
 BENCHMARK_DIRECTORY = Path("benchmarks")
+
 
 for benchmark in BENCHMARK_DIRECTORY.iterdir():
     if benchmark.is_dir() and not benchmark.name.startswith("bm_"):
@@ -12,6 +13,10 @@ for benchmark in BENCHMARK_DIRECTORY.iterdir():
 
     if benchmark.is_dir():
         orig_path = benchmark.resolve()
+        bench_results: dict[str, list[float]] = {
+            "nuitka": [],
+            "cpython": [],
+        }
         with temporary_directory_change(benchmark):
             requirements_exists = (orig_path / "requirements.txt").exists()
             if not (orig_path / "run_benchmark.py").exists():
@@ -27,7 +32,6 @@ for benchmark in BENCHMARK_DIRECTORY.iterdir():
                 f"{python_executable} --version",
                 f"{python_executable} -m pip install nuitka pyperf",
                 f"{python_executable} -m nuitka --standalone --remove-output run_benchmark.py",
-                f"run_benchmark.dist/run_benchmark.exe",
             ]
             if requirements_exists:
                 commands.insert(
@@ -41,9 +45,16 @@ for benchmark in BENCHMARK_DIRECTORY.iterdir():
                     print(f"Failed to run command {command}")
                     break
 
+            bench_results["nuitka"] = run_benchmark(
+                benchmark, python_executable, 50, "nuitka", "Nuitka"
+            )
+            bench_results["cpython"] = run_benchmark(
+                benchmark, python_executable, 50, "cpython", "CPython"
+            )
+            print(bench_results)
         # cleanup the benchmark directory venv
         venv_path = python_executable.parent.parent
 
-        print(f"Removing venv {venv_path}")
+        # print(f"Removing venv {venv_path}")
         shutil.rmtree(venv_path)
         shutil.rmtree(benchmark / "run_benchmark.dist")

@@ -14,7 +14,6 @@ Contributed by Kevin Carson.
 Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 """
 
-import pyperf
 from time import perf_counter
 
 __contact__ = "collinwinter@google.com (Collin Winter)"
@@ -125,41 +124,24 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
 
 
 def bench_nbody(loops, reference, iterations):
+    print(f"loops: {loops}, reference: {reference}, iterations: {iterations}")
     # Set up global state
     offset_momentum(BODIES[reference])
 
     range_it = range(loops)
-    t0 = pyperf.perf_counter()
+    t0 = (
+        perf_counter()
+    )  # pyperf.perf_counter() is just an alias for time.perf_counter()
 
     for _ in range_it:
         report_energy()
         advance(0.01, iterations)
         report_energy()
 
-    return pyperf.perf_counter() - t0
-
-
-def add_cmdline_args(cmd, args):
-    cmd.extend(("--iterations", str(args.iterations)))
+    return perf_counter() - t0
 
 
 if __name__ == "__main__":
-    # runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
-    # runner.metadata["description"] = "n-body benchmark"
-    # runner.argparser.add_argument(
-    #     "--iterations",
-    #     type=int,
-    #     default=DEFAULT_ITERATIONS,
-    #     help="Number of nbody advance() iterations "
-    #     "(default: %s)" % DEFAULT_ITERATIONS,
-    # )
-    # runner.argparser.add_argument(
-    #     "--reference",
-    #     type=str,
-    #     default=DEFAULT_REFERENCE,
-    #     help="nbody reference (default: %s)" % DEFAULT_REFERENCE,
-    # )
-
-    # args = runner.parse_args()
-    # runner.bench_time_func("nbody", bench_nbody, args.reference, args.iterations)
-    print(bench_nbody(50, "sun", 20000))
+    start = perf_counter()
+    bench_nbody(100, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
+    print(f"Time: {perf_counter() - start}")

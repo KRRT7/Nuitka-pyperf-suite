@@ -53,3 +53,39 @@ def resolve_venv_path() -> Path:
         return (new_venv_path / "Scripts" / "python.exe").resolve()
     else:
         raise FileNotFoundError("Failed to create venv")
+
+
+def run_benchmark(
+    benchmark: Path, sys_executable: Path, iterations: int, type: str, comment: str
+) -> dict[str, list[float]] | None:
+
+    local_results: dict[str, list[float]] = {
+        "warmup": [],
+        "benchmark": [],
+    }
+    run_command = {
+        "nuitka": Path(os.getcwd()) / "run_benchmark.dist/run_benchmark.exe",
+        "cpython": [sys_executable, "run_benchmark.py"],
+    }
+
+    for _ in range(iterations):
+        with Timer() as timer:
+            res = run(run_command[type])  # type: ignore
+            if res.returncode != 0:
+                print(f"Failed to run benchmark {benchmark.name}")
+                return None
+
+        local_results["warmup"].append(timer.time_taken)
+
+    for _ in range(iterations):
+        with Timer() as timer:
+            res = run(run_command[type])  # type: ignore
+            if res.returncode != 0:
+                print(f"Failed to run benchmark {benchmark.name}")
+                return None
+
+        local_results["benchmark"].append(timer.time_taken)
+
+    print(f"Ran benchmark {benchmark.name} with {comment} {iterations} times")
+
+    return local_results
