@@ -19,6 +19,13 @@ ITERATIONS = 100
 versions = parse_py_launcher()
 
 for python_version, nuitka_version in product(versions, NUITKA_VERSIONS):
+    if "github" in nuitka_version:
+        nuitka_name = "Nuitka-factory"
+    else:
+        nuitka_name = "Nuitka-release"
+
+    print(f"Running benchmarks for {python_version} and {nuitka_name}")
+
     for benchmark in BENCHMARK_DIRECTORY.iterdir():
         if benchmark.is_dir() and not benchmark.name.startswith("bm_"):
             continue
@@ -62,6 +69,8 @@ for python_version, nuitka_version in product(versions, NUITKA_VERSIONS):
                         ITERATIONS,
                         python_version,
                         nuitka_version,
+                        "Nuitka",
+                        nuitka_name
                     )
 
                     bench_results["cpython"] = run_benchmark(
@@ -70,6 +79,7 @@ for python_version, nuitka_version in product(versions, NUITKA_VERSIONS):
                         ITERATIONS,
                         python_version,
                         nuitka_version,
+                        "CPython",
                     )
 
                     results = Table(

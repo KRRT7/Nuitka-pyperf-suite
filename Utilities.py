@@ -80,6 +80,8 @@ def run_benchmark(
     iterations: int,
     cpython_version: str,
     nuitka_version: str,
+    type: str,
+    nuitka_name: str,
 ) -> dict[str, list[float]]:
     local_results: dict[str, list[float]] = {
         "warmup": [],
@@ -92,7 +94,7 @@ def run_benchmark(
 
     for _ in track(
         list(range(iterations)),
-        description=f"Running benchmark {benchmark.name} with {cpython_version}-{nuitka_version}-warmup",
+        description=f"Running benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}-warmup",
     ):
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
@@ -102,7 +104,7 @@ def run_benchmark(
 
     for _ in track(
         list(range(iterations)),
-        description=f"Running benchmark {benchmark.name} with {cpython_version}-{nuitka_version}-benchmark",
+        description=f"Running benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}-benchmark",
     ):
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
@@ -111,7 +113,8 @@ def run_benchmark(
 
         local_results["benchmark"].append(timer.time_taken)
 
-    print(f"Ran benchmark {benchmark.name} with {type} {iterations} times")
+    # print(f"Ran benchmark {benchmark.name} with {nuitka_version} | pyver {cpython_version}")
+    print(f"Ran benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}")
 
     return local_results
 
