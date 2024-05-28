@@ -9,9 +9,7 @@ contributed by Daniel Nanz, 2008-08-21
 """
 
 from bisect import bisect
-
-import pyperf
-
+from time import perf_counter
 
 SOLVE_ARG = 60
 
@@ -209,7 +207,7 @@ def solve(
 
 def bench_meteor_contest(loops, board, pieces, solve_arg, fps, se_nh):
     range_it = range(loops)
-    t0 = pyperf.perf_counter()
+    t0 = perf_counter()
 
     for _ in range_it:
         free = frozenset(range(len(board)))
@@ -218,7 +216,7 @@ def bench_meteor_contest(loops, board, pieces, solve_arg, fps, se_nh):
         solutions = []
         solve(solve_arg, 0, free, curr_board, pieces_left, solutions, fps, se_nh)
 
-    dt = pyperf.perf_counter() - t0
+    dt = perf_counter() - t0
 
     if solutions != SOLUTIONS:
         raise ValueError("unexpected solutions")
@@ -227,17 +225,12 @@ def bench_meteor_contest(loops, board, pieces, solve_arg, fps, se_nh):
 
 
 def main():
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "Solver for Meteor Puzzle board"
-
     board, cti, pieces = get_puzzle(WIDTH, HEIGHT)
     fps = get_footprints(board, cti, pieces)
     se_nh = get_senh(board, cti)
 
     solve_arg = SOLVE_ARG
-    runner.bench_time_func(
-        "meteor_contest", bench_meteor_contest, board, pieces, solve_arg, fps, se_nh
-    )
+    bench_meteor_contest(50, board, pieces, solve_arg, fps, se_nh)
 
 
 if __name__ == "__main__":

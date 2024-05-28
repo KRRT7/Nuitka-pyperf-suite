@@ -1,8 +1,8 @@
-import pyperf
+# import pyperf
 
 from sqlglot import parse_one, transpile
 from sqlglot.optimizer import optimize, normalize
-
+from time import perf_counter
 
 SQL = """
 select
@@ -130,27 +130,34 @@ TPCH_SCHEMA = {
 def bench_parse(loops):
     elapsed = 0
     for _ in range(loops):
-        t0 = pyperf.perf_counter()
+        # t0 = pyperf.perf_counter()
+        t0 = perf_counter()
         parse_one(SQL)
-        elapsed += pyperf.perf_counter() - t0
+        # elapsed += pyperf.perf_counter() - t0
+        elapsed += perf_counter() - t0
     return elapsed
 
 
 def bench_transpile(loops):
     elapsed = 0
     for _ in range(loops):
-        t0 = pyperf.perf_counter()
+        # t0 = pyperf.perf_counter()
+        t0 = perf_counter()
+
         transpile(SQL, write="spark")
-        elapsed += pyperf.perf_counter() - t0
+        # elapsed += pyperf.perf_counter() - t0
+        elapsed += perf_counter() - t0
     return elapsed
 
 
 def bench_optimize(loops):
     elapsed = 0
     for _ in range(loops):
-        t0 = pyperf.perf_counter()
+        # t0 = pyperf.perf_counter()
+        t0 = perf_counter()
         optimize(parse_one(SQL), TPCH_SCHEMA)
-        elapsed += pyperf.perf_counter() - t0
+        # elapsed += pyperf.perf_counter() - t0
+        elapsed += perf_counter() - t0
     return elapsed
 
 
@@ -158,9 +165,11 @@ def bench_normalize(loops):
     elapsed = 0
     conjunction = parse_one("(A AND B) OR (C AND D) OR (E AND F) OR (G AND H)")
     for _ in range(loops):
-        t0 = pyperf.perf_counter()
+        # t0 = pyperf.perf_counter()
+        t0 = perf_counter()
         normalize.normalize(conjunction)
-        elapsed += pyperf.perf_counter() - t0
+        # elapsed += pyperf.perf_counter() - t0
+        elapsed += perf_counter() - t0
     return elapsed
 
 
@@ -181,10 +190,5 @@ def add_parser_args(parser):
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
-    runner.metadata["description"] = "SQLGlot benchmark"
-    add_parser_args(runner.argparser)
-    args = runner.parse_args()
-    benchmark = args.benchmark
-
-    runner.bench_time_func(f"sqlglot_{benchmark}", BENCHMARKS[benchmark])
+    for benchmark in BENCHMARKS:
+        BENCHMARKS[benchmark](10)

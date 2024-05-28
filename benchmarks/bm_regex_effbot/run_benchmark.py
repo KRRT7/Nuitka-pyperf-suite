@@ -14,7 +14,7 @@ because they're "old".
 import re
 
 # Local imports
-import pyperf
+from time import perf_counter
 
 USE_BYTES = False
 
@@ -134,7 +134,7 @@ def bench_regex_effbot(loops):
 
     range_it = range(loops)
     search = re.search
-    t0 = pyperf.perf_counter()
+    t0 = perf_counter()
 
     for _ in range_it:
         # Runs all of the benchmarks for a given value of n.
@@ -151,7 +151,7 @@ def bench_regex_effbot(loops):
             search(regex, string)
             search(regex, string)
 
-    return pyperf.perf_counter() - t0
+    return perf_counter() - t0
 
 
 # cached data, generated at the first call
@@ -164,15 +164,4 @@ def add_cmdline_args(cmd, args):
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
-    runner.metadata["description"] = (
-        "Test the performance of regexps " "using Fredik Lundh's benchmarks."
-    )
-    runner.argparser.add_argument(
-        "-B", "--force_bytes", action="store_true", help="test bytes regexps"
-    )
-    options = runner.parse_args()
-    if options.force_bytes:
-        USE_BYTES = True
-
-    runner.bench_time_func("regex_effbot", bench_regex_effbot, inner_loops=10)
+    bench_regex_effbot(100)
