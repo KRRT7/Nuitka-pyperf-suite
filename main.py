@@ -68,9 +68,8 @@ for python_version, nuitka_version in product(versions, NUITKA_VERSIONS):
                         python_executable,
                         ITERATIONS,
                         python_version,
-                        nuitka_version,
                         "Nuitka",
-                        nuitka_name
+                        nuitka_name,
                     )
 
                     bench_results["cpython"] = run_benchmark(
@@ -78,8 +77,8 @@ for python_version, nuitka_version in product(versions, NUITKA_VERSIONS):
                         python_executable,
                         ITERATIONS,
                         python_version,
-                        nuitka_version,
                         "CPython",
+                        nuitka_name,
                     )
 
                     results = Table(

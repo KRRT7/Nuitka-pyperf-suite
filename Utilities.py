@@ -79,7 +79,6 @@ def run_benchmark(
     python_executable: Path,
     iterations: int,
     cpython_version: str,
-    nuitka_version: str,
     type: str,
     nuitka_name: str,
 ) -> dict[str, list[float]]:
@@ -94,7 +93,7 @@ def run_benchmark(
 
     for _ in track(
         list(range(iterations)),
-        description=f"Running benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}-warmup",
+        description=f"Running benchmark {benchmark.name} with {nuitka_name} ({type}) | Python Version: {cpython_version}-warmup",
     ):
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
