@@ -141,4 +141,4 @@ def bench_nbody(loops, reference, iterations):
 
 
 if __name__ == "__main__":
-    bench_nbody(100, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)
+    bench_nbody(50, DEFAULT_REFERENCE, DEFAULT_ITERATIONS)

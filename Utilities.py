@@ -9,7 +9,8 @@ from subprocess import run, Popen, PIPE
 from rich import print
 from rich.progress import track
 
-NUITKA_VERSIONS = ["nuitka", '"https://github.com/Nuitka/Nuitka/archive/factory.zip"']
+# NUITKA_VERSIONS = ["nuitka", '"https://github.com/Nuitka/Nuitka/archive/factory.zip"'] # Currently factory is equivalent to release
+NUITKA_VERSIONS = ["nuitka"]
 
 
 class Timer:
@@ -90,10 +91,17 @@ def run_benchmark(
         "Nuitka": Path(os.getcwd()) / "run_benchmark.dist/run_benchmark.exe",
         "CPython": [python_executable, "run_benchmark.py"],
     }
+    description_dict = {
+        # "Nuitka": f"Benchmarking {benchmark.name} with {type} | Python Version: {cpython_version} | Nuitka Version: {nuitka_name}",
+        "Nuitka": f"{benchmark.name} with {type} | Nuitka Version: {nuitka_name}",
+        "CPython": f"{benchmark.name} with {type} | Python Version: {cpython_version}",
+    }
 
     for _ in track(
-        list(range(iterations)),
-        description=f"Running benchmark {benchmark.name} with {nuitka_name} ({type}) | Python Version: {cpython_version}-warmup",
+        range(iterations),
+        # description=description_dict[type] + " (warmup)",
+        description="Warming up " + description_dict[type],
+        total=iterations,
     ):
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
@@ -101,9 +109,14 @@ def run_benchmark(
                 raise RuntimeError(f"Failed to run benchmark {benchmark.name}")
         local_results["warmup"].append(timer.time_taken)
 
+    if max(local_results["warmup"]) == local_results["warmup"][0]:
+        local_results["warmup"].pop(0)
+
     for _ in track(
-        list(range(iterations)),
-        description=f"Running benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}-benchmark",
+        range(iterations),
+        # description=description_dict[type] + " (benchmark)",
+        description="Benchmarking " + description_dict[type],
+        total=iterations,
     ):
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
@@ -112,14 +125,18 @@ def run_benchmark(
 
         local_results["benchmark"].append(timer.time_taken)
 
-    # print(f"Ran benchmark {benchmark.name} with {nuitka_version} | pyver {cpython_version}")
-    print(f"Ran benchmark {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}")
+    if max(local_results["benchmark"]) == local_results["benchmark"][0]:
+        local_results["benchmark"].pop(0)
+
+    print(
+        f"Results for {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}"
+    )
 
     return local_results
 
 
 def parse_py_launcher():
-    BLACKLIST = ["3.13", "3.13t"]
+    BLACKLIST = ["3.13", "3.13t", "3.6", "3.7", "3.8", "3.9", "3.10", "3.12"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
     resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
     if "Active venv" in resp[0][0]:
@@ -134,3 +151,30 @@ def parse_py_launcher():
 def is_in_venv():
     # https://stackoverflow.com/a/1883251
     return sys.prefix != sys.base_prefix
+
+    # bench_results: dict[str, dict[str, list[float]]] = {
+    #     "nuitka": {"benchmark": [], "warmup": []},
+    #     "cpython": {"benchmark": [], "warmup": []},
+    # }
+
+
+def calculate_stats(results: dict[str, list[float]]) -> dict[str, float]:
+    is_warmup_skewed = min(results["warmup"]) == results["warmup"][0]
+    is_benchmark_skewed = min(results["benchmark"]) == results["benchmark"][0]
+
+    return {
+        "warmup": (
+            sum(results["warmup"]) / len(results["warmup"])
+            if not is_warmup_skewed
+            else sum(results["warmup"][1:]) / len(results["warmup"][1:])
+        ),
+        "benchmark": (
+            sum(results["benchmark"]) / len(results["benchmark"])
+            if not is_benchmark_skewed
+            else sum(results["benchmark"][1:]) / len(results["benchmark"][1:])
+        ),
+    }
+    # return {
+    #     "warmup": sum(results["warmup"]) / len(results["warmup"]),
+    #     "benchmark": sum(results["benchmark"]) / len(results["benchmark"]),
+    # }
