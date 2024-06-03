@@ -5,6 +5,7 @@ from typing import Any
 from pathlib import Path
 import sys
 from subprocess import run, Popen, PIPE
+from statistics import mean
 
 from rich import print
 from rich.progress import track
@@ -158,23 +159,11 @@ def is_in_venv():
     # }
 
 
-def calculate_stats(results: dict[str, list[float]]) -> dict[str, float]:
-    is_warmup_skewed = min(results["warmup"]) == results["warmup"][0]
-    is_benchmark_skewed = min(results["benchmark"]) == results["benchmark"][0]
+def calculate_stats(results: dict[str, list[float]]) -> float:
+    is_warmup_skewed: bool = min(results["warmup"]) == results["warmup"][0]
+    is_benchmark_skewed: bool = min(results["benchmark"]) == results["benchmark"][0]
 
-    return {
-        "warmup": (
-            sum(results["warmup"]) / len(results["warmup"])
-            if not is_warmup_skewed
-            else sum(results["warmup"][1:]) / len(results["warmup"][1:])
-        ),
-        "benchmark": (
-            sum(results["benchmark"]) / len(results["benchmark"])
-            if not is_benchmark_skewed
-            else sum(results["benchmark"][1:]) / len(results["benchmark"][1:])
-        ),
-    }
-    # return {
-    #     "warmup": sum(results["warmup"]) / len(results["warmup"]),
-    #     "benchmark": sum(results["benchmark"]) / len(results["benchmark"]),
-    # }
+    warmup = mean(results["warmup"][is_warmup_skewed:])
+    benchmark = mean(results["benchmark"][is_benchmark_skewed:])
+
+    return min(warmup, benchmark)

@@ -104,42 +104,25 @@ for python_version in versions:
                     results.add_column("Nuitka", justify="right", style="magenta")
                     results.add_column("CPython", justify="right", style="green")
 
-                    print(calculate_stats(bench_results["nuitka"]))
-                    # min_nuitka = min(
-                    #     sum(bench_results["nuitka"]["benchmark"])
-                    #     / len(bench_results["nuitka"]["benchmark"]),
-                    #     sum(bench_results["nuitka"]["warmup"])
-                    #     / len(bench_results["nuitka"]["warmup"]),
-                    # )
-                    # min_nuitka = min(
-                    #     calculate_average(bench_results["nuitka"]["benchmark"]),
-                    #     calculate_average(bench_results["nuitka"]["warmup"]),
-                    # )
+                    min_nuitka = calculate_stats(bench_results["nuitka"])
+                    min_cpython = calculate_stats(bench_results["cpython"])
+                    if min_nuitka < min_cpython:
+                        print(
+                            f"{nuitka_version} is faster for benchmark {benchmark.name} by {((min_cpython - min_nuitka) / min_cpython) * 100:.2f}%"
+                        )
+                    else:
+                        print(
+                            f"{python_version} is faster for benchmark {benchmark.name} by {((min_nuitka - min_cpython) / min_nuitka) * 100:.2f}%"
+                        )
+                    results.add_section()
+                    for key in ["warmup", "benchmark"]:
+                        results.add_row(
+                            key,
+                            f"{sum(bench_results['nuitka'][key]) / ITERATIONS:.2f}",
+                            f"{sum(bench_results['cpython'][key]) / ITERATIONS:.2f}",
+                        )
 
-                    # min_cpython = min(
-                    #     sum(bench_results["cpython"]["benchmark"])
-                    #     / len(bench_results["cpython"]["benchmark"]),
-                    #     sum(bench_results["cpython"]["warmup"])
-                    #     / len(bench_results["cpython"]["warmup"]),
-                    # )
-
-                    # if min_nuitka < min_cpython:
-                    #     print(
-                    #         f"{nuitka_version} is faster for benchmark {benchmark.name} by {((min_cpython - min_nuitka) / min_cpython) * 100:.2f}%"
-                    #     )
-                    # else:
-                    #     print(
-                    #         f"{python_version} is faster for benchmark {benchmark.name} by {((min_nuitka - min_cpython) / min_nuitka) * 100:.2f}%"
-                    #     )
-                    # results.add_section()
-                    # for key in ["warmup", "benchmark"]:
-                    #     results.add_row(
-                    #         key,
-                    #         f"{sum(bench_results['nuitka'][key]) / ITERATIONS:.2f}",
-                    #         f"{sum(bench_results['cpython'][key]) / ITERATIONS:.2f}",
-                    #     )
-
-                    # print(results)
+                    print(results)
                     # cleanup the benchmark directory venv
                 except KeyboardInterrupt:
                     print(

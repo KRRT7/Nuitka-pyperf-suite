@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from json import load
 from rich import print
 from rich.table import Table
+from ..Utilities import calculate_stats
 
 
 @dataclass
@@ -144,31 +145,31 @@ for python_version, benchmarks in sorted_results:
     # min_cpython = min(release.cpython_stats.benchmark)
     # faster = "Yes" if cpython_avg > nuitka_avg else "No"
 
-                #    min_nuitka = min(
-                #         sum(bench_results["nuitka"]["benchmark"]) / ITERATIONS,
-                #         sum(bench_results["nuitka"]["warmup"]) / ITERATIONS,
-                #     )
+    #    min_nuitka = min(
+    #         sum(bench_results["nuitka"]["benchmark"]) / ITERATIONS,
+    #         sum(bench_results["nuitka"]["warmup"]) / ITERATIONS,
+    #     )
 
-                #     min_cpython = min(
-                #         sum(bench_results["cpython"]["benchmark"]) / ITERATIONS,
-                #         sum(bench_results["cpython"]["warmup"]) / ITERATIONS,
-                #     )
+    #     min_cpython = min(
+    #         sum(bench_results["cpython"]["benchmark"]) / ITERATIONS,
+    #         sum(bench_results["cpython"]["warmup"]) / ITERATIONS,
+    #     )
 
-                #     if min_nuitka < min_cpython:
-                #         print(
-                #             f"{nuitka_version} is faster for benchmark {benchmark.name} by {((min_cpython - min_nuitka) / min_cpython) * 100:.2f}%"
-                #         )
-                #     else:
-                #         print(
-                #             f"{python_version} is faster for benchmark {benchmark.name} by {((min_nuitka - min_cpython) / min_nuitka) * 100:.2f}%"
-                #         )
-                #     results.add_section()
-                #     for key in ["warmup", "benchmark"]:
-                #         results.add_row(
-                #             key,
-                #             f"{sum(bench_results['nuitka'][key]) / ITERATIONS:.2f}",
-                #             f"{sum(bench_results['cpython'][key]) / ITERATIONS:.2f}",
-                #         )
+    #     if min_nuitka < min_cpython:
+    #         print(
+    #             f"{nuitka_version} is faster for benchmark {benchmark.name} by {((min_cpython - min_nuitka) / min_cpython) * 100:.2f}%"
+    #         )
+    #     else:
+    #         print(
+    #             f"{python_version} is faster for benchmark {benchmark.name} by {((min_nuitka - min_cpython) / min_nuitka) * 100:.2f}%"
+    #         )
+    #     results.add_section()
+    #     for key in ["warmup", "benchmark"]:
+    #         results.add_row(
+    #             key,
+    #             f"{sum(bench_results['nuitka'][key]) / ITERATIONS:.2f}",
+    #             f"{sum(bench_results['cpython'][key]) / ITERATIONS:.2f}",
+    #         )
     min_release = min(
         sum(release.nuitka_stats.benchmark) / len(release.nuitka_stats.benchmark),
         sum(release.nuitka_stats.warmup) / len(release.nuitka_stats.warmup),
@@ -185,7 +186,6 @@ for python_version, benchmarks in sorted_results:
         sum(factory.cpython_stats.benchmark) / len(factory.cpython_stats.benchmark),
         sum(factory.cpython_stats.warmup) / len(factory.cpython_stats.warmup),
     )
-
 
     # Bench_table.add_row(
     #     release.benchmark_name,
