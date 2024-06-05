@@ -22,8 +22,8 @@ def bench_thread_pool(c: int, n: int, chunk: int) -> None:
 
 
 if __name__ == "__main__":
-    # count = 100000
-    count = 5
+    count = 100000
+    # count = 5
     chunk = 10
     num_core = 2
     bench_mp_pool(num_core, count, chunk)

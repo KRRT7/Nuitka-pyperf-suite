@@ -4,7 +4,6 @@ from Utilities import (
     parse_py_launcher,
     create_venv_with_version,
     NUITKA_VERSIONS,
-    calculate_stats,
 )
 from pathlib import Path
 import shutil
@@ -97,33 +96,7 @@ for python_version in versions:
 
                     with open(results_file, "w") as f:
                         json.dump(bench_results, f)
-                    results = Table(
-                        title=f"Benchmarks for {benchmark.name}, {python_version}"
-                    )
-                    results.add_column("Benchmark", justify="left", style="cyan")
-                    results.add_column("Nuitka", justify="right", style="magenta")
-                    results.add_column("CPython", justify="right", style="green")
 
-                    min_nuitka = calculate_stats(bench_results["nuitka"])
-                    min_cpython = calculate_stats(bench_results["cpython"])
-                    if min_nuitka < min_cpython:
-                        print(
-                            f"{nuitka_version} is faster for benchmark {benchmark.name} by {((min_cpython - min_nuitka) / min_cpython) * 100:.2f}%"
-                        )
-                    else:
-                        print(
-                            f"{python_version} is faster for benchmark {benchmark.name} by {((min_nuitka - min_cpython) / min_nuitka) * 100:.2f}%"
-                        )
-                    results.add_section()
-                    for key in ["warmup", "benchmark"]:
-                        results.add_row(
-                            key,
-                            f"{sum(bench_results['nuitka'][key]) / ITERATIONS:.2f}",
-                            f"{sum(bench_results['cpython'][key]) / ITERATIONS:.2f}",
-                        )
-
-                    print(results)
-                    # cleanup the benchmark directory venv
                 except KeyboardInterrupt:
                     print(
                         f"Interrupted running benchmark {benchmark.name} with {python_version}, cleaning up"

@@ -110,13 +110,9 @@ def run_benchmark(
                 raise RuntimeError(f"Failed to run benchmark {benchmark.name}")
         local_results["warmup"].append(timer.time_taken)
 
-    if max(local_results["warmup"]) == local_results["warmup"][0]:
-        local_results["warmup"].pop(0)
-
     for _ in track(
         range(iterations),
-        # description=description_dict[type] + " (benchmark)",
-        description="Benchmarking " + description_dict[type],
+        description=f"benchmarking {description_dict[type]}",
         total=iterations,
     ):
         with Timer() as timer:
@@ -126,18 +122,14 @@ def run_benchmark(
 
         local_results["benchmark"].append(timer.time_taken)
 
-    if max(local_results["benchmark"]) == local_results["benchmark"][0]:
-        local_results["benchmark"].pop(0)
-
-    print(
-        f"Results for {benchmark.name} with {nuitka_name} | Python Version: {cpython_version}"
-    )
+    print(f"Completed benchmarking {benchmark.name} with {type}")
 
     return local_results
 
 
 def parse_py_launcher():
-    BLACKLIST = ["3.13", "3.13t", "3.6", "3.7", "3.8", "3.9", "3.10", "3.12"]
+    # BLACKLIST = ["3.13", "3.13t", "3.6", "3.7", "3.8", "3.9", "3.10", "3.12"]
+    BLACKLIST = ["3.13", "3.13t"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
     resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
     if "Active venv" in resp[0][0]:
@@ -152,18 +144,3 @@ def parse_py_launcher():
 def is_in_venv():
     # https://stackoverflow.com/a/1883251
     return sys.prefix != sys.base_prefix
-
-    # bench_results: dict[str, dict[str, list[float]]] = {
-    #     "nuitka": {"benchmark": [], "warmup": []},
-    #     "cpython": {"benchmark": [], "warmup": []},
-    # }
-
-
-def calculate_stats(results: dict[str, list[float]]) -> float:
-    is_warmup_skewed: bool = min(results["warmup"]) == results["warmup"][0]
-    is_benchmark_skewed: bool = min(results["benchmark"]) == results["benchmark"][0]
-
-    warmup = mean(results["warmup"][is_warmup_skewed:])
-    benchmark = mean(results["benchmark"][is_benchmark_skewed:])
-
-    return min(warmup, benchmark)
