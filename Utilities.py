@@ -126,7 +126,7 @@ def run_benchmark(
 
 
 def parse_py_launcher():
-    # BLACKLIST = ["3.13", "3.13t", "3.6", "3.7", "3.8", "3.9", "3.10", "3.12"]
+    # BLACKLIST = ["3.6", "3.7", "3.8", "3.9", "3.10", "3.12", "3.13", "3.13t"]
     BLACKLIST = ["3.13", "3.13t", "3.6"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
     resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
