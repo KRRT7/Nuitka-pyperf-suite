@@ -93,15 +93,13 @@ def run_benchmark(
         "CPython": [python_executable, "run_benchmark.py"],
     }
     description_dict = {
-        # "Nuitka": f"Benchmarking {benchmark.name} with {type} | Python Version: {cpython_version} | Nuitka Version: {nuitka_name}",
-        "Nuitka": f"{benchmark.name} with {type} | Nuitka Version: {nuitka_name}",
+        "Nuitka": f"{benchmark.name} with {type} | Nuitka Version: {nuitka_name} ({cpython_version})",
         "CPython": f"{benchmark.name} with {type} | Python Version: {cpython_version}",
     }
 
     for _ in track(
         range(iterations),
-        # description=description_dict[type] + " (warmup)",
-        description="Warming up " + description_dict[type],
+        description=f"warming up {description_dict[type]}",
         total=iterations,
     ):
         with Timer() as timer:
@@ -129,7 +127,7 @@ def run_benchmark(
 
 def parse_py_launcher():
     # BLACKLIST = ["3.13", "3.13t", "3.6", "3.7", "3.8", "3.9", "3.10", "3.12"]
-    BLACKLIST = ["3.13", "3.13t"]
+    BLACKLIST = ["3.13", "3.13t", "3.6"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
     resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
     if "Active venv" in resp[0][0]:
