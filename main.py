@@ -60,7 +60,7 @@ for python_version in versions:
                 try:
                     commands = [
                         f"{python_executable} --version",
-                        f"{python_executable} -m pip install --upgrade pip",
+                        f"{python_executable} -m pip install --upgrade pip setuptools wheel",
                         f"{python_executable} -m pip install {nuitka_version}",
                         f"{python_executable} -m pip install ordered-set",
                         f"{python_executable} -m pip install appdirs",

@@ -164,4 +164,5 @@ def add_cmdline_args(cmd, args):
 
 
 if __name__ == "__main__":
-    bench_regex_effbot(100)
+    # bench_regex_effbot(100)
+    bench_regex_effbot(30)

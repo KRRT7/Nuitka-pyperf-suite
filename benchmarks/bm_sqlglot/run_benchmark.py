@@ -130,10 +130,8 @@ TPCH_SCHEMA = {
 def bench_parse(loops):
     elapsed = 0
     for _ in range(loops):
-        # t0 = pyperf.perf_counter()
         t0 = perf_counter()
         parse_one(SQL)
-        # elapsed += pyperf.perf_counter() - t0
         elapsed += perf_counter() - t0
     return elapsed
 
@@ -141,11 +139,9 @@ def bench_parse(loops):
 def bench_transpile(loops):
     elapsed = 0
     for _ in range(loops):
-        # t0 = pyperf.perf_counter()
         t0 = perf_counter()
 
         transpile(SQL, write="spark")
-        # elapsed += pyperf.perf_counter() - t0
         elapsed += perf_counter() - t0
     return elapsed
 
@@ -153,10 +149,8 @@ def bench_transpile(loops):
 def bench_optimize(loops):
     elapsed = 0
     for _ in range(loops):
-        # t0 = pyperf.perf_counter()
         t0 = perf_counter()
         optimize(parse_one(SQL), TPCH_SCHEMA)
-        # elapsed += pyperf.perf_counter() - t0
         elapsed += perf_counter() - t0
     return elapsed
 
@@ -165,10 +159,8 @@ def bench_normalize(loops):
     elapsed = 0
     conjunction = parse_one("(A AND B) OR (C AND D) OR (E AND F) OR (G AND H)")
     for _ in range(loops):
-        # t0 = pyperf.perf_counter()
         t0 = perf_counter()
         normalize.normalize(conjunction)
-        # elapsed += pyperf.perf_counter() - t0
         elapsed += perf_counter() - t0
     return elapsed
 
@@ -191,4 +183,5 @@ def add_parser_args(parser):
 
 if __name__ == "__main__":
     for benchmark in BENCHMARKS:
-        BENCHMARKS[benchmark](10)
+        # BENCHMARKS[benchmark](10)
+        BENCHMARKS[benchmark](3)

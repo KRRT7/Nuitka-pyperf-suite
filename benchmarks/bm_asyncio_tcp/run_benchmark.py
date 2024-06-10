@@ -6,14 +6,20 @@ Author: Kumar Aditya
 """
 
 import asyncio
-from pyperf import Runner
-import ssl
-import os
 
-CHUNK_SIZE = 1024**2 * 10
+# from pyperf import Runner
+import ssl
+from pathlib import Path
+
+CHUNK_SIZE = 1024**2 * 10 // 4
 # Taken from CPython's test suite
-SSL_CERT = os.path.join(os.path.dirname(__file__), "ssl_cert.pem")
-SSL_KEY = os.path.join(os.path.dirname(__file__), "ssl_key.pem")
+if "__compiled__" in globals():
+    # This is a workaround for nuitka, which sets __compiled__ to True
+    SSL_CERT = Path(__file__).parent.parent / "ssl_cert.pem"
+    SSL_KEY = Path(__file__).parent.parent / "ssl_key.pem"
+else:
+    SSL_CERT = Path(__file__).parent / "ssl_cert.pem"
+    SSL_KEY = Path(__file__).parent / "ssl_key.pem"
 
 
 async def handle_echo(
@@ -68,9 +74,11 @@ def add_cmdline_args(cmd, args):
 
 
 if __name__ == "__main__":
-    runner = Runner(add_cmdline_args=add_cmdline_args)
-    parser = runner.argparser
-    parser.add_argument("--ssl", action="store_true", default=False)
-    args = runner.parse_args()
-    name = "asyncio_tcp" + ("_ssl" if args.ssl else "")
-    runner.bench_async_func(name, main, args.ssl)
+    # runner = Runner(add_cmdline_args=add_cmdline_args)
+    # parser = runner.argparser
+    # parser.add_argument("--ssl", action="store_true", default=False)
+    # args = runner.parse_args()
+    # name = "asyncio_tcp" + ("_ssl" if args.ssl else "")
+    # runner.bench_async_func(name, main, args.ssl)
+    asyncio.run(main(use_ssl=False))
+    asyncio.run(main(use_ssl=True))

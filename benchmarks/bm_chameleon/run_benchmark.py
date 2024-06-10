@@ -1,6 +1,6 @@
 import functools
 
-import pyperf
+# import pyperf
 
 from chameleon import PageTemplate
 
@@ -18,18 +18,27 @@ tal:content="python: d" />
 </table>"""
 
 
-def main():
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "Chameleon template"
+# def main():
+#     runner = pyperf.Runner()
+#     runner.metadata["description"] = "Chameleon template"
 
+#     tmpl = PageTemplate(BIGTABLE_ZPT)
+#     table = [
+#         dict(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10) for x in range(500)
+#     ]
+#     options = {"table": table}
+
+
+#     func = functools.partial(tmpl, options=options)
+#     runner.bench_func("chameleon", func)
+def main():
     tmpl = PageTemplate(BIGTABLE_ZPT)
     table = [
         dict(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10) for x in range(500)
     ]
     options = {"table": table}
-
     func = functools.partial(tmpl, options=options)
-    runner.bench_func("chameleon", func)
+    func()
 
 
 if __name__ == "__main__":

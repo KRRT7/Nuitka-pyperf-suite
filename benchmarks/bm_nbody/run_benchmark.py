@@ -17,7 +17,8 @@ Modified by Tupteq, Fredrik Johansson, and Daniel Nanz.
 from time import perf_counter
 
 __contact__ = "collinwinter@google.com (Collin Winter)"
-DEFAULT_ITERATIONS = 20000
+# DEFAULT_ITERATIONS = 20000
+DEFAULT_ITERATIONS = 2000
 DEFAULT_REFERENCE = "sun"
 
 

@@ -20,7 +20,7 @@ import asyncio
 import math
 import random
 
-import pyperf
+# import pyperf
 
 
 NUM_RECURSE_LEVELS = 6
@@ -185,15 +185,25 @@ BENCHMARKS = {
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
-    add_metadata(runner)
-    add_parser_args(runner.argparser)
-    args = runner.parse_args()
-    benchmark = args.benchmark
+    # runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
+    # add_metadata(runner)
+    # add_parser_args(runner.argparser)
+    # args = runner.parse_args()
+    # benchmark = args.benchmark
 
-    async_tree_class = BENCHMARKS[benchmark]
-    async_tree = async_tree_class(use_task_groups=args.task_groups)
-    bench_name = f"async_tree_{benchmark}"
-    if args.task_groups:
-        bench_name += "_tg"
-    runner.bench_async_func(bench_name, async_tree.run)
+    # async_tree_class = BENCHMARKS[benchmark]
+    # async_tree = async_tree_class(use_task_groups=args.task_groups)
+    # bench_name = f"async_tree_{benchmark}"
+    # if args.task_groups:
+    #     bench_name += "_tg"
+    # runner.bench_async_func(bench_name, async_tree.run)
+
+    # for benchmark in BENCHMARKS:
+    #     async_tree_class = BENCHMARKS[benchmark]
+    #     async_tree = async_tree_class(use_task_groups=False)
+    #     asyncio.run(async_tree.run())
+
+    for benchmark in BENCHMARKS:
+        async_tree_class = BENCHMARKS[benchmark]
+        async_tree = async_tree_class(use_task_groups=True)
+        asyncio.run(async_tree.run())
