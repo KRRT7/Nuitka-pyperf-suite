@@ -9,6 +9,7 @@ Benchmark AES in CTR mode using the pyaes module.
 
 import pyaes
 from time import perf_counter
+
 # 23,000 bytes
 CLEARTEXT = b"This is a test. What could possibly go wrong? " * 500
 

@@ -104,16 +104,14 @@ for python_version in versions:
                     break
                 except Exception as e:
                     print(
-                        f"Failed to run benchmark {benchmark.name} with {python_version}"
+                        f"Failed to run benchmark {benchmark.name} with {python_version}\n{e}"
                     )
-                    print(e)
                     break
                 finally:
                     # cleanup the benchmark directory venv and dist
                     venv_path = python_executable.parent.parent
-                    dist_path = benchmark / "run_benchmark.dist"
-                    print(f"removing dist {dist_path}")
-                    # print(f"Removing venv {venv_path}")
+                    dist_path = (orig_path / "run_benchmark.dist").resolve()
+
                     shutil.rmtree(venv_path)
                     if dist_path.exists():
                         shutil.rmtree(dist_path)

@@ -281,7 +281,6 @@ def main():
     )
 
 
-
 # def main(runner, args):
 #     splines = [
 #         Spline(

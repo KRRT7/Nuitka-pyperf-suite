@@ -171,5 +171,5 @@ if __name__ == "__main__":
         DATA = Path(__file__).parent.parent / "data" / "frankenstein_intro.txt"
     else:
         DATA = Path(__file__).parent / "data" / "frankenstein_intro.txt"
-    
+
     bench_bpe_tokeniser(1)
