@@ -112,6 +112,7 @@ for python_version in versions:
                     # cleanup the benchmark directory venv and dist
                     venv_path = python_executable.parent.parent
                     dist_path = benchmark / "run_benchmark.dist"
+                    print(f"removing dist {dist_path}")
                     # print(f"Removing venv {venv_path}")
                     shutil.rmtree(venv_path)
                     if dist_path.exists():

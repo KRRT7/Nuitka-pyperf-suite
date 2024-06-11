@@ -5,10 +5,10 @@ Pure-Python Implementation of the AES block-cipher.
 Benchmark AES in CTR mode using the pyaes module.
 """
 
-import pyperf
+# import pyperf
 
 import pyaes
-
+from time import perf_counter
 # 23,000 bytes
 CLEARTEXT = b"This is a test. What could possibly go wrong? " * 500
 
@@ -18,7 +18,8 @@ KEY = b"\xa1\xf6%\x8c\x87}_\xcd\x89dHE8\xbf\xc9,"
 
 def bench_pyaes(loops):
     range_it = range(loops)
-    t0 = pyperf.perf_counter()
+    # t0 = pyperf.perf_counter()
+    t0 = perf_counter()
 
     for loops in range_it:
         aes = pyaes.AESModeOfOperationCTR(KEY)
@@ -31,7 +32,8 @@ def bench_pyaes(loops):
         # explicitly destroy the pyaes object
         aes = None
 
-    dt = pyperf.perf_counter() - t0
+    # dt = pyperf.perf_counter() - t0
+    dt = perf_counter() - t0
     if plaintext != CLEARTEXT:
         raise Exception("decrypt error!")
 
@@ -39,8 +41,10 @@ def bench_pyaes(loops):
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner()
-    runner.metadata["description"] = (
-        "Pure-Python Implementation " "of the AES block-cipher"
-    )
-    runner.bench_time_func("crypto_pyaes", bench_pyaes)
+    # runner = pyperf.Runner()
+    # runner.metadata["description"] = (
+    #     "Pure-Python Implementation " "of the AES block-cipher"
+    # )
+    # runner.bench_time_func("crypto_pyaes", bench_pyaes)
+
+    bench_pyaes(10)

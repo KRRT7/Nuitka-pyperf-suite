@@ -4,7 +4,8 @@ Benchmark for recursive coroutines.
 Author: Kumar Aditya
 """
 
-import pyperf
+# import pyperf
+from time import perf_counter
 
 
 async def fibonacci(n: int) -> int:
@@ -15,7 +16,8 @@ async def fibonacci(n: int) -> int:
 
 def bench_coroutines(loops: int) -> float:
     range_it = range(loops)
-    t0 = pyperf.perf_counter()
+    # t0 = pyperf.perf_counter()
+    t0 = perf_counter()
     for _ in range_it:
         coro = fibonacci(25)
         try:
@@ -23,10 +25,13 @@ def bench_coroutines(loops: int) -> float:
                 coro.send(None)
         except StopIteration:
             pass
-    return pyperf.perf_counter() - t0
+    # return pyperf.perf_counter() - t0
+    return perf_counter() - t0
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "Benchmark coroutines"
-    runner.bench_time_func("coroutines", bench_coroutines)
+    # runner = pyperf.Runner()
+    # runner.metadata["description"] = "Benchmark coroutines"
+    # runner.bench_time_func("coroutines", bench_coroutines)
+
+    bench_coroutines(20)

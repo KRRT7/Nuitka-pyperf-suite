@@ -9,7 +9,7 @@ import sys
 from dask.distributed import Client, Worker, Scheduler, wait
 from dask import distributed
 
-import pyperf
+# import pyperf
 
 
 def inc(x):
@@ -36,6 +36,8 @@ if __name__ == "__main__":
     ):
         raise RuntimeError("Benchmark doesn't work with Python 3.13 on Windows")
 
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "Benchmark dask"
-    runner.bench_async_func("dask", benchmark)
+    # runner = pyperf.Runner()
+    # runner.metadata["description"] = "Benchmark dask"
+    # runner.bench_async_func("dask", benchmark)
+
+    benchmark()

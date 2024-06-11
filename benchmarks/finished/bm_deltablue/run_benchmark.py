@@ -18,7 +18,8 @@ the layout & logic from the original. (Ugh.)
 .. _`V8's source code`: (https://github.com/v8/v8/blob/master/benchmarks/deltablue.js)
 """
 
-import pyperf
+# import pyperf
+from time import perf_counter
 
 
 # The JS variant implements "OrderedCollection", which basically completely
@@ -629,8 +630,9 @@ def delta_blue(n):
 
 
 if __name__ == "__main__":
-    runner = pyperf.Runner()
-    runner.metadata["description"] = "DeltaBlue benchmark"
+    # runner = pyperf.Runner()
+    # runner.metadata["description"] = "DeltaBlue benchmark"
 
     n = 100
-    runner.bench_func("deltablue", delta_blue, n)
+    # runner.bench_func("deltablue", delta_blue, n)
+    delta_blue(n)
