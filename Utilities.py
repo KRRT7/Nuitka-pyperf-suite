@@ -154,14 +154,44 @@ def is_in_venv() -> bool:
     return sys.prefix != sys.base_prefix
 
 
-def get_benchmarks(visualizer: bool | None = None) -> Iterator[Path]:
+def get_benchmarks(visualizer: bool | None = None) -> list[Path]:
+    results = []
     if visualizer:
+        # reminder: we want to return a tuple of the date and the benchmark results for that date
         for benchmark in BENCHMARK_DIRECTORY.iterdir():
             if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
                 continue
-            yield benchmark
+            results.append(benchmark)
     else:
         for benchmark in BENCHMARK_DIRECTORY.iterdir():
             if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
                 continue
-            yield benchmark
+            results.append(benchmark)
+    return results
+
+
+def setup_benchmark_enviroment(
+    nuitka_version: str,
+    requirements_exists: bool,
+    python_executable: str,
+) -> None:
+    try:
+        commands = [
+            f"{python_executable} --version",
+            f"{python_executable} -m pip install --upgrade pip setuptools wheel",
+            f"{python_executable} -m pip install {nuitka_version}",
+            f"{python_executable} -m pip install ordered-set",
+            f"{python_executable} -m pip install appdirs",
+            f"{python_executable} -m nuitka --standalone --remove-output run_benchmark.py",
+        ]
+        if requirements_exists:
+            commands.insert(
+                2, f"{python_executable} -m pip install -r requirements.txt"
+            )
+        for command in commands:
+            res = run(command, stdout=PIPE, stderr=PIPE)
+            if res.returncode != 0:
+                print(f"Failed to run command {command}")
+                break
+    except Exception as e:
+        raise RuntimeError(f"Failed to setup benchmark enviroment\n{e}")

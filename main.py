@@ -5,6 +5,7 @@ from Utilities import (
     create_venv_with_version,
     BENCHMARK_DIRECTORY,
     get_benchmarks,
+    setup_benchmark_enviroment,
 )
 from visualizer import Benchmark, Stats
 import shutil
@@ -23,7 +24,8 @@ for python_version, nuitka_version in product(versions, ["nuitka"]):
     nuitka_name = (
         "Nuitka-stable" if "github" not in nuitka_version else "Nuitka-factory"
     )
-    for benchmark in get_benchmarks():
+    benchmarks = get_benchmarks()
+    for benchmark in benchmarks:
         orig_path = benchmark.resolve()
 
         results_dir = orig_path / "results" / datetime.now().strftime("%Y-%m-%d")
@@ -33,14 +35,10 @@ for python_version, nuitka_version in product(versions, ["nuitka"]):
             print(f"Skipping benchmark {benchmark.name}, because results exist")
             continue
 
-        # if not results_dir.exists():
-        #     results_dir.mkdir(parents=True, exist_ok=True)
-        # results_file.touch(exist_ok=True)
+        if not results_dir.exists():
+            results_dir.mkdir(parents=True, exist_ok=True)
+        results_file.touch(exist_ok=True)
 
-        # bench_results: dict[str, dict[str, list[float]]] = {
-        #     "nuitka": {"benchmark": [], "warmup": []},
-        #     "cpython": {"benchmark": [], "warmup": []},
-        # }
         bench_result = Benchmark(
             target=nuitka_name,
             nuitka_version=nuitka_version,
@@ -56,26 +54,14 @@ for python_version, nuitka_version in product(versions, ["nuitka"]):
                     f"Skipping benchmark {benchmark.name}, because {orig_path / 'run_benchmark.py'} does not exist"
                 )
                 continue
-            python_executable = create_venv_with_version(python_version)
-            try:
-                commands = [
-                    f"{python_executable} --version",
-                    f"{python_executable} -m pip install --upgrade pip setuptools wheel",
-                    f"{python_executable} -m pip install {nuitka_version}",
-                    f"{python_executable} -m pip install ordered-set",
-                    f"{python_executable} -m pip install appdirs",
-                    f"{python_executable} -m nuitka --standalone --remove-output run_benchmark.py",
-                ]
-                if requirements_exists:
-                    commands.insert(
-                        2, f"{python_executable} -m pip install -r requirements.txt"
-                    )
-                for command in commands:
-                    res = run(command, stdout=PIPE, stderr=PIPE)
-                    if res.returncode != 0:
-                        print(f"Failed to run command {command}")
-                        break
 
+            python_executable = create_venv_with_version(python_version)
+            setup_benchmark_enviroment(
+                nuitka_version,
+                requirements_exists,
+                str(python_executable.resolve()),
+            )
+            try:
                 nuitka_benchmark = run_benchmark(
                     benchmark,
                     python_executable,
