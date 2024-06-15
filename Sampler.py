@@ -17,7 +17,7 @@ class Benchmark:
     target: str
     nuitka_version: str
     python_version: tuple[int, int]
-    file_json: dict
+    file_json: dict[str, dict[str, list[float]]]
     nuitka_stats: Stats
     cpython_stats: Stats
     benchmark_name: str
@@ -30,7 +30,7 @@ class Benchmark:
         return target, nuitka_version, python_version_tuple
 
     @staticmethod
-    def parse_stats(stats: dict) -> dict:
+    def parse_stats(stats: dict[str, dict[str, list[float]]]) -> dict[str, Stats]:
         nuitka_stats = stats["nuitka"]
         cpython_stats = stats["cpython"]
         return {
@@ -55,15 +55,25 @@ class Benchmark:
             file_json = load(f)
 
         file_info = cls.parse_file_name(file_path.stem)
-        parsed_stats = cls.parse_stats(file_json)
+        # parsed_stats = cls.parse_stats(file_json)
         return cls(
             target=file_info[0],
             nuitka_version=file_info[1],
             python_version=file_info[2],
             file_json=file_json,
-            nuitka_stats=parsed_stats["nuitka"],
-            cpython_stats=parsed_stats["cpython"],
-            benchmark_name=benchmark_name.strip("bm_"),
+            # nuitka_stats=parsed_stats["nuitka"],
+            nuitka_stats=Stats(
+                "nuitka",
+                file_json["nuitka"]["warmup"],
+                file_json["nuitka"]["benchmark"],
+            ),
+            # cpython_stats=parsed_stats["cpython"],
+            cpython_stats=Stats(
+                "cpython",
+                file_json["cpython"]["warmup"],
+                file_json["cpython"]["benchmark"],
+            ),
+            benchmark_name=benchmark_name.removeprefix("bm_"),
         )
 
     def calculate_stats(self, which: Literal["nuitka", "cpython"]) -> float:

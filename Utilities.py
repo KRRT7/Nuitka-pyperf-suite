@@ -1,7 +1,8 @@
 from contextlib import contextmanager
 from time import perf_counter
 import os
-from typing import Any
+from typing import Any, Iterator, Callable
+from typing_extensions import Never
 from pathlib import Path
 import sys
 from subprocess import run, Popen, PIPE
@@ -15,23 +16,23 @@ NUITKA_VERSIONS = ["nuitka"]
 
 
 class Timer:
-    def __init__(self):
-        self.start = 0
-        self.end = 0
+    def __init__(self) -> None:
+        self.start: float = 0
+        self.end: float = 0
 
-        self.time_taken = 0
+        self.time_taken: float = 0
 
-    def __enter__(self):
+    def __enter__(self) -> "Timer":
         self.start = perf_counter()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:  # type: ignore
         self.end = perf_counter()
 
         self.time_taken = self.end - self.start
 
-    def __call__(self, func: Any):
-        def wrapper(*args, **kwargs):
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             with self:
                 return func(*args, **kwargs)
 
@@ -39,7 +40,7 @@ class Timer:
 
 
 @contextmanager
-def temporary_directory_change(path: Path):
+def temporary_directory_change(path: Path) -> Iterator[None]:
     if not path.exists():
         raise FileNotFoundError(f"Directory {path} does not exist")
     current_directory = Path.cwd()
@@ -125,11 +126,14 @@ def run_benchmark(
     return local_results
 
 
-def parse_py_launcher():
-    # BLACKLIST = ["3.6", "3.7", "3.8", "3.9", "3.10", "3.12", "3.13", "3.13t"]
+def parse_py_launcher() -> list[str]:
     BLACKLIST = ["3.13", "3.13t", "3.6"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
-    resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
+    if res.returncode != 0:
+        raise RuntimeError("Failed to get Python versions")
+    if res.stdout:
+        resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
+    
     if "Active venv" in resp[0][0]:
         resp.pop(0)
     versions = [
@@ -139,6 +143,6 @@ def parse_py_launcher():
     return versions
 
 
-def is_in_venv():
+def is_in_venv() -> bool:
     # https://stackoverflow.com/a/1883251
     return sys.prefix != sys.base_prefix
