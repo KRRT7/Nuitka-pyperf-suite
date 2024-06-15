@@ -2,17 +2,17 @@ from contextlib import contextmanager
 from time import perf_counter
 import os
 from typing import Any, Iterator, Callable
-from typing_extensions import Never
 from pathlib import Path
 import sys
 from subprocess import run, Popen, PIPE
-from statistics import mean
 
 from rich import print
 from rich.progress import track
+import platform
 
 # NUITKA_VERSIONS = ["nuitka", '"https://github.com/Nuitka/Nuitka/archive/factory.zip"'] # Currently factory is equivalent to release
 NUITKA_VERSIONS = ["nuitka"]
+BENCHMARK_DIRECTORY = Path(__file__).parent / "benchmarks"
 
 
 class Timer:
@@ -130,20 +130,23 @@ def run_benchmark(
 
 
 def parse_py_launcher() -> list[str]:
+
     BLACKLIST = ["3.13", "3.13t", "3.6"]
-    res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
-    if res.returncode != 0 and res.stdout:
-        resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
+    if platform.system() == "Windows":
+        res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
+        if res.returncode != 0 and res.stdout:
+            resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
 
-    if "Active venv" in resp[0][0]:
-        resp.pop(0)
+        if "Active venv" in resp[0][0]:
+            resp.pop(0)
 
-    versions = [
-        version[0].strip().replace("-V:", "").replace(" *", "") for version in resp
-    ]
-    versions = [version for version in versions if version not in BLACKLIST]
-    return versions
-
+        versions = [
+            version[0].strip().replace("-V:", "").replace(" *", "") for version in resp
+        ]
+        versions = [version for version in versions if version not in BLACKLIST]
+        return versions
+    else:
+        raise NotImplementedError("Only Windows is supported")
 
 def is_in_venv() -> bool:
     # https://stackoverflow.com/a/1883251

@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Literal
 from pathlib import Path
 from statistics import mean
 from json import load
@@ -77,7 +77,7 @@ class Benchmark:
         )
 
     def calculate_stats(self, which: Literal["nuitka", "cpython"]) -> float:
-        stats = self.nuitka_stats if which == "nuitka" else self.cpython_stats
+        stats = self.nuitka_stats if which.lower() == "nuitka" else self.cpython_stats
 
         is_warmup_skewed: bool = min(stats.warmup) == stats.warmup[0]
         is_benchmark_skewed: bool = min(stats.benchmark) == stats.benchmark[0]
