@@ -106,7 +106,10 @@ def run_benchmark(
         with Timer() as timer:
             res = run(run_command[type])  # type: ignore
             if res.returncode != 0:
-                raise RuntimeError(f"Failed to run benchmark {benchmark.name}")
+                raise RuntimeError(
+                    f"Failed to run benchmark {benchmark.name} due to {res.stderr}"
+                )
+
         local_results["warmup"].append(timer.time_taken)
 
     for _ in track(
@@ -129,13 +132,12 @@ def run_benchmark(
 def parse_py_launcher() -> list[str]:
     BLACKLIST = ["3.13", "3.13t", "3.6"]
     res = Popen(["py", "-0"], shell=True, stdout=PIPE, stderr=PIPE)
-    if res.returncode != 0:
-        raise RuntimeError("Failed to get Python versions")
-    if res.stdout:
+    if res.returncode != 0 and res.stdout:
         resp = [line.decode("utf-8").strip().split("Python") for line in res.stdout]
-    
+
     if "Active venv" in resp[0][0]:
         resp.pop(0)
+
     versions = [
         version[0].strip().replace("-V:", "").replace(" *", "") for version in resp
     ]
