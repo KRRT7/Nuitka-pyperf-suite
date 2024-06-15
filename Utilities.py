@@ -148,6 +148,20 @@ def parse_py_launcher() -> list[str]:
     else:
         raise NotImplementedError("Only Windows is supported")
 
+
 def is_in_venv() -> bool:
     # https://stackoverflow.com/a/1883251
     return sys.prefix != sys.base_prefix
+
+
+def get_benchmarks(visualizer: bool | None = None) -> Iterator[Path]:
+    if visualizer:
+        for benchmark in BENCHMARK_DIRECTORY.iterdir():
+            if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
+                continue
+            yield benchmark
+    else:
+        for benchmark in BENCHMARK_DIRECTORY.iterdir():
+            if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
+                continue
+            yield benchmark
