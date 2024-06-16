@@ -3,17 +3,6 @@ experimental benchmark suite for nuitka using an adapted and naive form of the C
 <html>
 <head>
 <meta charset="UTF-8">
-<style>
-.r1 {font-style: italic}
-.r2 {font-weight: bold; font-style: italic}
-.r3 {font-weight: bold}
-.r4 {color: #cc555a; text-decoration-color: #cc555a}
-.r5 {color: #98a84b; text-decoration-color: #98a84b}
-body {
-    color: #c5c8c6;
-    background-color: #292929;
-}
-</style>
 </head>
 <body>
     <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span class="r1">              </span><span class="r2">bm_asyncio_tcp</span><span class="r1">               </span>
