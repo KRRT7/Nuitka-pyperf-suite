@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <style>
 .r1 {font-style: italic}
-.r2 {font-weight: bold; font-style: italic}
-.r3 {font-weight: bold}
-.r4 {color: #cc555a; text-decoration-color: #cc555a}
-.r5 {color: #98a84b; text-decoration-color: #98a84b}
+.r2 {font-weight: bold}
+.r3 {color: #cc555a; text-decoration-color: #cc555a}
+.r4 {color: #98a84b; text-decoration-color: #98a84b}
 body {
     color: #c5c8c6;
     background-color: #292929;
@@ -15,127 +14,252 @@ body {
 </style>
 </head>
 <body>
-    <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span class="r1">              </span><span class="r2">bm_asyncio_tcp</span><span class="r1">               </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 2.10    │ 2.15   │ <span class="r4">2.29%</span>      │
-│ 3.8     │ 1.59    │ 1.56   │ <span class="r5">1.91%</span>      │
-│ 3.9     │ 1.47    │ 1.43   │ <span class="r5">2.27%</span>      │
-│ 3.10    │ 1.64    │ 1.54   │ <span class="r5">6.24%</span>      │
-│ 3.11    │ 1.64    │ 1.61   │ <span class="r5">2.28%</span>      │
-│ 3.12    │ 1.53    │ 1.39   │ <span class="r5">9.12%</span>      │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">           </span><span class="r2">bm_asyncio_websockets</span><span class="r1">           </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 1.57    │ 1.46   │ <span class="r5">6.67%</span>      │
-│ 3.8     │ 1.44    │ 1.36   │ <span class="r5">5.76%</span>      │
-│ 3.9     │ 1.44    │ 1.37   │ <span class="r5">5.11%</span>      │
-│ 3.10    │ 1.52    │ 1.45   │ <span class="r5">4.86%</span>      │
-│ 3.11    │ 1.43    │ 1.34   │ <span class="r5">6.24%</span>      │
-│ 3.12    │ 1.46    │ 1.36   │ <span class="r5">6.87%</span>      │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">            </span><span class="r2">bm_async_generators</span><span class="r1">            </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 0.66    │ 0.57   │ <span class="r5">13.44%</span>     │
-│ 3.8     │ 0.65    │ 0.53   │ <span class="r5">18.36%</span>     │
-│ 3.9     │ 0.64    │ 0.53   │ <span class="r5">17.13%</span>     │
-│ 3.10    │ 0.66    │ 0.52   │ <span class="r5">21.66%</span>     │
-│ 3.11    │ 0.59    │ 0.54   │ <span class="r5">8.01%</span>      │
-│ 3.12    │ 0.74    │ 0.66   │ <span class="r5">11.32%</span>     │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">             </span><span class="r2">bm_comprehensions</span><span class="r1">             </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 1.92    │ 1.58   │ <span class="r5">17.72%</span>     │
-│ 3.8     │ 1.73    │ 1.21   │ <span class="r5">29.84%</span>     │
-│ 3.9     │ 1.65    │ 1.23   │ <span class="r5">25.41%</span>     │
-│ 3.10    │ 1.77    │ 1.27   │ <span class="r5">28.55%</span>     │
-│ 3.11    │ 1.67    │ 1.23   │ <span class="r5">26.47%</span>     │
-│ 3.12    │ 1.22    │ 1.34   │ <span class="r4">10.02%</span>     │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">            </span><span class="r2">bm_concurrent_imap</span><span class="r1">             </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 0.94    │ 0.84   │ <span class="r5">11.04%</span>     │
-│ 3.8     │ 1.19    │ 1.13   │ <span class="r5">4.75%</span>      │
-│ 3.9     │ 1.17    │ 1.17   │ <span class="r4">0.11%</span>      │
-│ 3.10    │ 1.18    │ 1.13   │ <span class="r5">4.35%</span>      │
-│ 3.11    │ 1.06    │ 1.07   │ <span class="r4">0.52%</span>      │
-│ 3.12    │ 1.01    │ 1.62   │ <span class="r4">61.28%</span>     │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">               </span><span class="r2">bm_coroutines</span><span class="r1">               </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 1.10    │ 1.05   │ <span class="r5">4.34%</span>      │
-│ 3.8     │ 1.08    │ 1.04   │ <span class="r5">3.79%</span>      │
-│ 3.9     │ 1.03    │ 1.01   │ <span class="r5">2.16%</span>      │
-│ 3.10    │ 0.80    │ 1.00   │ <span class="r4">24.49%</span>     │
-│ 3.11    │ 0.77    │ 1.04   │ <span class="r4">34.34%</span>     │
-│ 3.12    │ 0.67    │ 1.30   │ <span class="r4">93.30%</span>     │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">              </span><span class="r2">bm_crypto_pyaes</span><span class="r1">              </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 1.60    │ 1.34   │ <span class="r5">16.36%</span>     │
-│ 3.8     │ 1.46    │ 1.23   │ <span class="r5">15.63%</span>     │
-│ 3.9     │ 1.35    │ 1.19   │ <span class="r5">12.33%</span>     │
-│ 3.10    │ 1.42    │ 1.20   │ <span class="r5">15.20%</span>     │
-│ 3.11    │ 1.03    │ 0.94   │ <span class="r5">8.87%</span>      │
-│ 3.12    │ 1.09    │ 1.08   │ <span class="r5">1.65%</span>      │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">             </span><span class="r2">bm_meteor_contest</span><span class="r1">             </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 0.83    │ 0.73   │ <span class="r5">12.01%</span>     │
-│ 3.8     │ 0.74    │ 0.65   │ <span class="r5">11.72%</span>     │
-│ 3.9     │ 0.75    │ 0.65   │ <span class="r5">12.85%</span>     │
-│ 3.10    │ 0.77    │ 0.66   │ <span class="r5">14.02%</span>     │
-│ 3.11    │ 0.76    │ 0.67   │ <span class="r5">12.79%</span>     │
-│ 3.12    │ 0.77    │ 0.71   │ <span class="r5">7.56%</span>      │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">                 </span><span class="r2">bm_nbody</span><span class="r1">                  </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 0.95    │ 0.80   │ <span class="r5">16.46%</span>     │
-│ 3.8     │ 0.77    │ 0.75   │ <span class="r5">2.78%</span>      │
-│ 3.9     │ 0.78    │ 0.75   │ <span class="r5">3.98%</span>      │
-│ 3.10    │ 0.82    │ 0.77   │ <span class="r5">6.22%</span>      │
-│ 3.11    │ 0.80    │ 0.84   │ <span class="r4">4.48%</span>      │
-│ 3.12    │ 0.76    │ 0.94   │ <span class="r4">23.61%</span>     │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">              </span><span class="r2">bm_regex_effbot</span><span class="r1">              </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 1.39    │ 1.38   │ <span class="r5">1.17%</span>      │
-│ 3.8     │ 1.27    │ 1.25   │ <span class="r5">1.57%</span>      │
-│ 3.9     │ 1.18    │ 1.16   │ <span class="r5">1.67%</span>      │
-│ 3.10    │ 1.25    │ 1.23   │ <span class="r5">1.44%</span>      │
-│ 3.11    │ 1.13    │ 1.08   │ <span class="r5">4.17%</span>      │
-│ 3.12    │ 1.13    │ 1.12   │ <span class="r5">0.98%</span>      │
-└─────────┴─────────┴────────┴────────────┘
-<span class="r1">                </span><span class="r2">bm_sqlglot</span><span class="r1">                 </span>
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃<span class="r3"> Version </span>┃<span class="r3"> Cpython </span>┃<span class="r3"> Nuitka </span>┃<span class="r3"> Difference </span>┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ 3.7     │ 2.28    │ 1.79   │ <span class="r5">21.51%</span>     │
-│ 3.8     │ 1.67    │ 1.31   │ <span class="r5">21.49%</span>     │
-│ 3.9     │ 1.65    │ 1.34   │ <span class="r5">18.35%</span>     │
-│ 3.10    │ 1.76    │ 1.40   │ <span class="r5">20.33%</span>     │
-│ 3.11    │ 1.63    │ 1.41   │ <span class="r5">13.68%</span>     │
-│ 3.12    │ 1.55    │ 1.61   │ <span class="r4">3.81%</span>      │
-└─────────┴─────────┴────────┴────────────┘
+    <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit">╭──────────────── 2024-06-13 ─────────────────╮
+│ <span class="r1">              bm_asyncio_tcp               </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 2.10    │ 2.15   │ <span class="r3">-2.29%</span>     │ │
+│ │ 3.8     │ 1.59    │ 1.56   │ <span class="r4">+1.91%</span>     │ │
+│ │ 3.9     │ 1.47    │ 1.43   │ <span class="r4">+2.27%</span>     │ │
+│ │ 3.10    │ 1.64    │ 1.54   │ <span class="r4">+6.24%</span>     │ │
+│ │ 3.11    │ 1.64    │ 1.61   │ <span class="r4">+2.28%</span>     │ │
+│ │ 3.12    │ 1.53    │ 1.39   │ <span class="r4">+9.12%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">           bm_asyncio_websockets           </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.57    │ 1.46   │ <span class="r4">+6.67%</span>     │ │
+│ │ 3.8     │ 1.44    │ 1.36   │ <span class="r4">+5.76%</span>     │ │
+│ │ 3.9     │ 1.44    │ 1.37   │ <span class="r4">+5.11%</span>     │ │
+│ │ 3.10    │ 1.52    │ 1.45   │ <span class="r4">+4.86%</span>     │ │
+│ │ 3.11    │ 1.43    │ 1.34   │ <span class="r4">+6.24%</span>     │ │
+│ │ 3.12    │ 1.46    │ 1.36   │ <span class="r4">+6.87%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">            bm_async_generators            </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.66    │ 0.57   │ <span class="r4">+13.44%</span>    │ │
+│ │ 3.8     │ 0.65    │ 0.53   │ <span class="r4">+18.36%</span>    │ │
+│ │ 3.9     │ 0.64    │ 0.53   │ <span class="r4">+17.13%</span>    │ │
+│ │ 3.10    │ 0.66    │ 0.52   │ <span class="r4">+21.66%</span>    │ │
+│ │ 3.11    │ 0.59    │ 0.54   │ <span class="r4">+8.01%</span>     │ │
+│ │ 3.12    │ 0.74    │ 0.66   │ <span class="r4">+11.32%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">             bm_comprehensions             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.92    │ 1.58   │ <span class="r4">+17.72%</span>    │ │
+│ │ 3.8     │ 1.73    │ 1.21   │ <span class="r4">+29.84%</span>    │ │
+│ │ 3.9     │ 1.65    │ 1.23   │ <span class="r4">+25.41%</span>    │ │
+│ │ 3.10    │ 1.77    │ 1.27   │ <span class="r4">+28.55%</span>    │ │
+│ │ 3.11    │ 1.67    │ 1.23   │ <span class="r4">+26.47%</span>    │ │
+│ │ 3.12    │ 1.22    │ 1.34   │ <span class="r3">-10.02%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">            bm_concurrent_imap             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.94    │ 0.84   │ <span class="r4">+11.04%</span>    │ │
+│ │ 3.8     │ 1.19    │ 1.13   │ <span class="r4">+4.75%</span>     │ │
+│ │ 3.9     │ 1.17    │ 1.17   │ <span class="r3">-0.11%</span>     │ │
+│ │ 3.10    │ 1.18    │ 1.13   │ <span class="r4">+4.35%</span>     │ │
+│ │ 3.11    │ 1.06    │ 1.07   │ <span class="r3">-0.52%</span>     │ │
+│ │ 3.12    │ 1.01    │ 1.62   │ <span class="r3">-61.28%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">               bm_coroutines               </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.10    │ 1.05   │ <span class="r4">+4.34%</span>     │ │
+│ │ 3.8     │ 1.08    │ 1.04   │ <span class="r4">+3.79%</span>     │ │
+│ │ 3.9     │ 1.03    │ 1.01   │ <span class="r4">+2.16%</span>     │ │
+│ │ 3.10    │ 0.80    │ 1.00   │ <span class="r3">-24.49%</span>    │ │
+│ │ 3.11    │ 0.77    │ 1.04   │ <span class="r3">-34.34%</span>    │ │
+│ │ 3.12    │ 0.67    │ 1.30   │ <span class="r3">-93.30%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">              bm_crypto_pyaes              </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.60    │ 1.34   │ <span class="r4">+16.36%</span>    │ │
+│ │ 3.8     │ 1.46    │ 1.23   │ <span class="r4">+15.63%</span>    │ │
+│ │ 3.9     │ 1.35    │ 1.19   │ <span class="r4">+12.33%</span>    │ │
+│ │ 3.10    │ 1.42    │ 1.20   │ <span class="r4">+15.20%</span>    │ │
+│ │ 3.11    │ 1.03    │ 0.94   │ <span class="r4">+8.87%</span>     │ │
+│ │ 3.12    │ 1.09    │ 1.08   │ <span class="r4">+1.65%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">             bm_meteor_contest             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.83    │ 0.73   │ <span class="r4">+12.01%</span>    │ │
+│ │ 3.8     │ 0.74    │ 0.65   │ <span class="r4">+11.72%</span>    │ │
+│ │ 3.9     │ 0.75    │ 0.65   │ <span class="r4">+12.85%</span>    │ │
+│ │ 3.10    │ 0.77    │ 0.66   │ <span class="r4">+14.02%</span>    │ │
+│ │ 3.11    │ 0.76    │ 0.67   │ <span class="r4">+12.79%</span>    │ │
+│ │ 3.12    │ 0.77    │ 0.71   │ <span class="r4">+7.56%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">                 bm_nbody                  </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.95    │ 0.80   │ <span class="r4">+16.46%</span>    │ │
+│ │ 3.8     │ 0.77    │ 0.75   │ <span class="r4">+2.78%</span>     │ │
+│ │ 3.9     │ 0.78    │ 0.75   │ <span class="r4">+3.98%</span>     │ │
+│ │ 3.10    │ 0.82    │ 0.77   │ <span class="r4">+6.22%</span>     │ │
+│ │ 3.11    │ 0.80    │ 0.84   │ <span class="r3">-4.48%</span>     │ │
+│ │ 3.12    │ 0.76    │ 0.94   │ <span class="r3">-23.61%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">              bm_regex_effbot              </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.39    │ 1.38   │ <span class="r4">+1.17%</span>     │ │
+│ │ 3.8     │ 1.27    │ 1.25   │ <span class="r4">+1.57%</span>     │ │
+│ │ 3.9     │ 1.18    │ 1.16   │ <span class="r4">+1.67%</span>     │ │
+│ │ 3.10    │ 1.25    │ 1.23   │ <span class="r4">+1.44%</span>     │ │
+│ │ 3.11    │ 1.13    │ 1.08   │ <span class="r4">+4.17%</span>     │ │
+│ │ 3.12    │ 1.13    │ 1.12   │ <span class="r4">+0.98%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">                bm_sqlglot                 </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 2.28    │ 1.79   │ <span class="r4">+21.51%</span>    │ │
+│ │ 3.8     │ 1.67    │ 1.31   │ <span class="r4">+21.49%</span>    │ │
+│ │ 3.9     │ 1.65    │ 1.34   │ <span class="r4">+18.35%</span>    │ │
+│ │ 3.10    │ 1.76    │ 1.40   │ <span class="r4">+20.33%</span>    │ │
+│ │ 3.11    │ 1.63    │ 1.41   │ <span class="r4">+13.68%</span>    │ │
+│ │ 3.12    │ 1.55    │ 1.61   │ <span class="r3">-3.81%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+╰─────────────────────────────────────────────╯
+╭──────────────── 2024-06-16 ─────────────────╮
+│ <span class="r1">              bm_asyncio_tcp               </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 2.05    │ 2.08   │ <span class="r3">-1.45%</span>     │ │
+│ │ 3.8     │ 1.52    │ 1.51   │ <span class="r4">+0.70%</span>     │ │
+│ │ 3.9     │ 1.53    │ 1.48   │ <span class="r4">+3.10%</span>     │ │
+│ │ 3.10    │ 1.57    │ 1.45   │ <span class="r4">+7.58%</span>     │ │
+│ │ 3.11    │ 1.63    │ 1.55   │ <span class="r4">+4.63%</span>     │ │
+│ │ 3.12    │ 1.43    │ 1.34   │ <span class="r4">+6.04%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">           bm_asyncio_websockets           </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.56    │ 1.45   │ <span class="r4">+7.38%</span>     │ │
+│ │ 3.8     │ 1.43    │ 1.35   │ <span class="r4">+5.84%</span>     │ │
+│ │ 3.9     │ 1.44    │ 1.36   │ <span class="r4">+5.88%</span>     │ │
+│ │ 3.10    │ 1.52    │ 1.44   │ <span class="r4">+4.69%</span>     │ │
+│ │ 3.11    │ 1.43    │ 1.34   │ <span class="r4">+6.45%</span>     │ │
+│ │ 3.12    │ 1.45    │ 1.35   │ <span class="r4">+6.64%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">            bm_async_generators            </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.65    │ 0.56   │ <span class="r4">+12.58%</span>    │ │
+│ │ 3.8     │ 0.64    │ 0.52   │ <span class="r4">+18.17%</span>    │ │
+│ │ 3.9     │ 0.63    │ 0.53   │ <span class="r4">+16.78%</span>    │ │
+│ │ 3.10    │ 0.65    │ 0.51   │ <span class="r4">+21.77%</span>    │ │
+│ │ 3.11    │ 0.59    │ 0.54   │ <span class="r4">+7.77%</span>     │ │
+│ │ 3.12    │ 0.74    │ 0.65   │ <span class="r4">+11.87%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">             bm_comprehensions             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.91    │ 1.59   │ <span class="r4">+16.62%</span>    │ │
+│ │ 3.8     │ 1.73    │ 1.21   │ <span class="r4">+30.06%</span>    │ │
+│ │ 3.9     │ 1.65    │ 1.23   │ <span class="r4">+25.24%</span>    │ │
+│ │ 3.10    │ 1.76    │ 1.28   │ <span class="r4">+27.64%</span>    │ │
+│ │ 3.11    │ 1.67    │ 1.24   │ <span class="r4">+25.36%</span>    │ │
+│ │ 3.12    │ 1.22    │ 1.34   │ <span class="r3">-10.29%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">            bm_concurrent_imap             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.91    │ 0.84   │ <span class="r4">+8.05%</span>     │ │
+│ │ 3.8     │ 1.15    │ 1.08   │ <span class="r4">+6.06%</span>     │ │
+│ │ 3.9     │ 1.16    │ 1.10   │ <span class="r4">+5.21%</span>     │ │
+│ │ 3.10    │ 1.19    │ 1.14   │ <span class="r4">+4.36%</span>     │ │
+│ │ 3.11    │ 1.07    │ 1.07   │ <span class="r3">-0.10%</span>     │ │
+│ │ 3.12    │ 1.00    │ 0.95   │ <span class="r4">+5.03%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">               bm_coroutines               </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.10    │ 1.02   │ <span class="r4">+7.39%</span>     │ │
+│ │ 3.8     │ 1.08    │ 1.00   │ <span class="r4">+7.33%</span>     │ │
+│ │ 3.9     │ 1.03    │ 0.99   │ <span class="r4">+3.79%</span>     │ │
+│ │ 3.10    │ 0.81    │ 1.01   │ <span class="r3">-24.59%</span>    │ │
+│ │ 3.11    │ 0.77    │ 1.07   │ <span class="r3">-38.53%</span>    │ │
+│ │ 3.12    │ 0.68    │ 1.40   │ <span class="r3">-107.10%</span>   │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">              bm_crypto_pyaes              </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.58    │ 1.33   │ <span class="r4">+16.32%</span>    │ │
+│ │ 3.8     │ 1.46    │ 1.23   │ <span class="r4">+15.80%</span>    │ │
+│ │ 3.9     │ 1.35    │ 1.19   │ <span class="r4">+11.78%</span>    │ │
+│ │ 3.10    │ 1.42    │ 1.21   │ <span class="r4">+14.98%</span>    │ │
+│ │ 3.11    │ 1.02    │ 0.93   │ <span class="r4">+9.46%</span>     │ │
+│ │ 3.12    │ 1.09    │ 1.07   │ <span class="r4">+2.13%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">             bm_meteor_contest             </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.82    │ 0.73   │ <span class="r4">+11.97%</span>    │ │
+│ │ 3.8     │ 0.74    │ 0.65   │ <span class="r4">+11.88%</span>    │ │
+│ │ 3.9     │ 0.75    │ 0.65   │ <span class="r4">+12.93%</span>    │ │
+│ │ 3.10    │ 0.77    │ 0.66   │ <span class="r4">+14.19%</span>    │ │
+│ │ 3.11    │ 0.76    │ 0.66   │ <span class="r4">+12.53%</span>    │ │
+│ │ 3.12    │ 0.77    │ 0.71   │ <span class="r4">+7.04%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">                 bm_nbody                  </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 0.95    │ 0.81   │ <span class="r4">+14.91%</span>    │ │
+│ │ 3.8     │ 0.77    │ 0.74   │ <span class="r4">+3.11%</span>     │ │
+│ │ 3.9     │ 0.78    │ 0.75   │ <span class="r4">+3.95%</span>     │ │
+│ │ 3.10    │ 0.81    │ 0.77   │ <span class="r4">+4.99%</span>     │ │
+│ │ 3.11    │ 0.80    │ 0.84   │ <span class="r3">-4.64%</span>     │ │
+│ │ 3.12    │ 0.76    │ 0.93   │ <span class="r3">-23.50%</span>    │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">              bm_regex_effbot              </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 1.38    │ 1.36   │ <span class="r4">+1.21%</span>     │ │
+│ │ 3.8     │ 1.27    │ 1.25   │ <span class="r4">+1.19%</span>     │ │
+│ │ 3.9     │ 1.17    │ 1.16   │ <span class="r4">+1.34%</span>     │ │
+│ │ 3.10    │ 1.25    │ 1.24   │ <span class="r4">+1.09%</span>     │ │
+│ │ 3.11    │ 1.12    │ 1.07   │ <span class="r4">+4.11%</span>     │ │
+│ │ 3.12    │ 1.13    │ 1.12   │ <span class="r4">+0.96%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+│ <span class="r1">                bm_sqlglot                 </span> │
+│ ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓ │
+│ ┃<span class="r2"> Version </span>┃<span class="r2"> Cpython </span>┃<span class="r2"> Nuitka </span>┃<span class="r2"> Difference </span>┃ │
+│ ┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩ │
+│ │ 3.7     │ 2.28    │ 1.76   │ <span class="r4">+22.61%</span>    │ │
+│ │ 3.8     │ 1.66    │ 1.31   │ <span class="r4">+21.17%</span>    │ │
+│ │ 3.9     │ 1.64    │ 1.34   │ <span class="r4">+17.91%</span>    │ │
+│ │ 3.10    │ 1.75    │ 1.40   │ <span class="r4">+20.17%</span>    │ │
+│ │ 3.11    │ 1.63    │ 1.40   │ <span class="r4">+13.77%</span>    │ │
+│ │ 3.12    │ 1.55    │ 1.61   │ <span class="r3">-3.83%</span>     │ │
+│ └─────────┴─────────┴────────┴────────────┘ │
+╰─────────────────────────────────────────────╯
 </code></pre>
 </body>
 </html>

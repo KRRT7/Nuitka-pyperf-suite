@@ -51,22 +51,25 @@ class Benchmark:
         python_version_tuple = (int(py_ver_split[0]), int(py_ver_split[1]))
         return target, nuitka_version, python_version_tuple
 
-    @staticmethod
-    def parse_stats(stats: dict[str, dict[str, list[float]]]) -> dict[str, Stats]:
-        nuitka_stats = stats["nuitka"]
-        cpython_stats = stats["cpython"]
-        return {
-            "nuitka": Stats(
-                "nuitka",
-                nuitka_stats["warmup"],
-                nuitka_stats["benchmark"],
-            ),
-            "cpython": Stats(
-                "cpython",
-                cpython_stats["warmup"],
-                cpython_stats["benchmark"],
-            ),
-        }
+    # @staticmethod
+    # def parse_stats(stats: dict[str, dict[str, list[float]]]) -> dict[str, Stats]:
+    def parse_stats(self, stats: dict[str, dict[str, list[float]]]) -> None:
+        # nuitka_stats = stats["nuitka"]
+        # cpython_stats = stats["cpython"]
+        # return {
+        #     "nuitka": Stats(
+        #         "nuitka",
+        #         nuitka_stats["warmup"],
+        #         nuitka_stats["benchmark"],
+        #     ),
+        #     "cpython": Stats(
+        #         "cpython",
+        #         cpython_stats["warmup"],
+        #         cpython_stats["benchmark"],
+        #     ),
+        # }
+        self.nuitka_stats = Stats.from_dict(stats["nuitka"], "nuitka")
+        self.cpython_stats = Stats.from_dict(stats["cpython"], "cpython")
 
     @classmethod
     def from_path(
@@ -84,24 +87,13 @@ class Benchmark:
             file_json = load(f)
 
         file_info = cls.parse_file_name(file_path.stem)
-        # parsed_stats = cls.parse_stats(file_json)
         return cls(
             target=file_info[0],
             nuitka_version=file_info[1],
             python_version=file_info[2],
             file_json=file_json,
-            # nuitka_stats=parsed_stats["nuitka"],
-            nuitka_stats=Stats(
-                "nuitka",
-                file_json["nuitka"]["warmup"],
-                file_json["nuitka"]["benchmark"],
-            ),
-            # cpython_stats=parsed_stats["cpython"],
-            cpython_stats=Stats(
-                "cpython",
-                file_json["cpython"]["warmup"],
-                file_json["cpython"]["benchmark"],
-            ),
+            nuitka_stats=Stats.from_dict(file_json["nuitka"], "nuitka"),
+            cpython_stats=Stats.from_dict(file_json["cpython"], "cpython"),
             benchmark_name=benchmark_name.removeprefix("bm_"),
         )
 
