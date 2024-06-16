@@ -3,7 +3,6 @@ from Utilities import (
     run_benchmark,
     parse_py_launcher,
     create_venv_with_version,
-    BENCHMARK_DIRECTORY,
     get_benchmarks,
     setup_benchmark_enviroment,
 )
@@ -45,7 +44,6 @@ for python_version, nuitka_version in product(versions, ["nuitka"]):
             python_version=Benchmark.parse_file_name(results_file.stem)[2],
             benchmark_name=benchmark.name,
         )
-        print(bench_result)
 
         with temporary_directory_change(benchmark):
             requirements_exists = (orig_path / "requirements.txt").exists()
