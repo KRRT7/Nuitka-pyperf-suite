@@ -3,10 +3,12 @@ from Utilities import (
     run_benchmark,
     parse_py_launcher,
     create_venv_with_version,
-    get_benchmarks,
+    get_benchmark_setup,
     setup_benchmark_enviroment,
+    Benchmark,
+    Stats,
 )
-from visualizer import Benchmark, Stats
+
 import shutil
 from subprocess import run, PIPE
 from rich import print
@@ -23,7 +25,7 @@ for python_version, nuitka_version in product(versions, ["nuitka"]):
     nuitka_name = (
         "Nuitka-stable" if "github" not in nuitka_version else "Nuitka-factory"
     )
-    benchmarks = get_benchmarks()
+    benchmarks = get_benchmark_setup()
     for benchmark in benchmarks:
         orig_path = benchmark.resolve()
 

@@ -1,18 +1,185 @@
 from contextlib import contextmanager
 from time import perf_counter
 import os
-from typing import Any, Iterator, Callable
+from typing import Any, Iterator, Callable, Literal, Generator
 from pathlib import Path
 import sys
 from subprocess import run, Popen, PIPE
-
+from statistics import mean
+from json import load, dump
+from dataclasses import dataclass
 from rich import print
 from rich.progress import track
 import platform
 
 # NUITKA_VERSIONS = ["nuitka", '"https://github.com/Nuitka/Nuitka/archive/factory.zip"'] # Currently factory is equivalent to release
 NUITKA_VERSIONS = ["nuitka"]
+
 BENCHMARK_DIRECTORY = Path(__file__).parent / "benchmarks"
+TEST_BENCHMARK_DIRECTORY = Path(__file__).parent / "benchmarks_test"
+
+
+@dataclass
+class Stats:
+    name: str
+    warmup: list[float]
+    benchmark: list[float]
+
+    @classmethod
+    def from_dict(cls, stats_dict: dict[str, list[float]], name: str) -> "Stats":
+        return cls(
+            name,
+            stats_dict["warmup"],
+            stats_dict["benchmark"],
+        )
+
+
+@dataclass
+class Benchmark:
+    target: str | None = None
+    nuitka_version: str | None = None
+    python_version: tuple[int, int] | None = None
+    file_json: dict[str, dict[str, list[float]]] | None = None
+    nuitka_stats: Stats | None = None
+    cpython_stats: Stats | None = None
+    benchmark_name: str = ""
+
+    @staticmethod
+    def parse_file_name(file_name: str) -> tuple[str, str, tuple[int, int]]:
+        target, nuitka_version, python_version = file_name.split("-")
+        py_ver_split = python_version.split(".")
+        python_version_tuple = (int(py_ver_split[0]), int(py_ver_split[1]))
+        return target, nuitka_version, python_version_tuple
+
+    @staticmethod
+    def parse_stats(stats: dict[str, dict[str, list[float]]]) -> dict[str, Stats]:
+        nuitka_stats = stats["nuitka"]
+        cpython_stats = stats["cpython"]
+        return {
+            "nuitka": Stats(
+                "nuitka",
+                nuitka_stats["warmup"],
+                nuitka_stats["benchmark"],
+            ),
+            "cpython": Stats(
+                "cpython",
+                cpython_stats["warmup"],
+                cpython_stats["benchmark"],
+            ),
+        }
+
+    @classmethod
+    def from_path(
+        cls, file_path: Path, benchmark_name: str, in_progess: bool = False
+    ) -> "Benchmark":
+        if in_progess:
+            return cls(
+                benchmark_name=benchmark_name,
+            )
+
+        if not file_path.stat().st_size > 0:
+            raise FileNotFoundError(f"File {file_path} does not exist or is empty")
+
+        with open(file_path, "r") as f:
+            file_json = load(f)
+
+        file_info = cls.parse_file_name(file_path.stem)
+        # parsed_stats = cls.parse_stats(file_json)
+        return cls(
+            target=file_info[0],
+            nuitka_version=file_info[1],
+            python_version=file_info[2],
+            file_json=file_json,
+            # nuitka_stats=parsed_stats["nuitka"],
+            nuitka_stats=Stats(
+                "nuitka",
+                file_json["nuitka"]["warmup"],
+                file_json["nuitka"]["benchmark"],
+            ),
+            # cpython_stats=parsed_stats["cpython"],
+            cpython_stats=Stats(
+                "cpython",
+                file_json["cpython"]["warmup"],
+                file_json["cpython"]["benchmark"],
+            ),
+            benchmark_name=benchmark_name.removeprefix("bm_"),
+        )
+
+    @classmethod
+    def from_dict(
+        cls, file_dict: dict[str, dict[str, list[float]]], benchmark_name: str
+    ) -> "Benchmark":
+        file_info = cls.parse_file_name(benchmark_name)
+        return cls(
+            target=file_info[0],
+            nuitka_version=file_info[1],
+            python_version=file_info[2],
+            file_json=file_dict,
+            nuitka_stats=Stats(
+                "nuitka",
+                file_dict["nuitka"]["warmup"],
+                file_dict["nuitka"]["benchmark"],
+            ),
+            cpython_stats=Stats(
+                "cpython",
+                file_dict["cpython"]["warmup"],
+                file_dict["cpython"]["benchmark"],
+            ),
+            benchmark_name=benchmark_name.removeprefix("bm_"),
+        )
+
+    def to_json_file(self, file_path: Path) -> None:
+
+        if not self.nuitka_stats or not self.cpython_stats:
+            raise ValueError("Stats not found")
+
+        contents = {
+            "nuitka": {
+                "warmup": self.nuitka_stats.warmup,
+                "benchmark": self.nuitka_stats.benchmark,
+            },
+            "cpython": {
+                "warmup": self.cpython_stats.warmup,
+                "benchmark": self.cpython_stats.benchmark,
+            },
+        }
+        with open(file_path, "w") as f:
+            dump(contents, f)
+
+    def calculate_stats(self, which: Literal["nuitka", "cpython"]) -> float:
+        if which.lower() not in ["nuitka", "cpython"]:
+            raise ValueError("Invalid value for 'which' parameter")
+
+        if not self.nuitka_stats or not self.cpython_stats:
+            raise ValueError("Stats not found")
+
+        stats = self.nuitka_stats if which.lower() == "nuitka" else self.cpython_stats
+
+        is_warmup_skewed: bool = min(stats.warmup) == stats.warmup[0]
+        is_benchmark_skewed: bool = min(stats.benchmark) == stats.benchmark[0]
+
+        warmup = mean(stats.warmup[is_warmup_skewed:])
+        benchmark = mean(stats.benchmark[is_benchmark_skewed:])
+
+        return min(warmup, benchmark)
+
+    def format_stats(self) -> str:
+        nuitka_stats = self.calculate_stats("nuitka")
+        cpython_stats = self.calculate_stats("cpython")
+
+        if nuitka_stats < cpython_stats:
+            difference = (cpython_stats - nuitka_stats) / cpython_stats * 100
+            return f"[green]+{difference:.2f}%[/green]"
+        elif nuitka_stats > cpython_stats:
+            difference = (nuitka_stats - cpython_stats) / cpython_stats * 100
+            return f"[red]-{difference:.2f}%[/red]"
+        else:
+            difference = (nuitka_stats - cpython_stats) / cpython_stats * 100
+            # return f"[yellow]{difference:.2f}%[/yellow]"
+            return f"[yellow](no-diff){difference:.2f}%[/yellow]"
+
+    def __repr__(self) -> str:
+        return f"{self.benchmark_name} reprd"
 
 
 class Timer:
@@ -154,20 +321,34 @@ def is_in_venv() -> bool:
     return sys.prefix != sys.base_prefix
 
 
-def get_benchmarks(visualizer: bool | None = None) -> list[Path]:
-    results = []
-    if visualizer:
-        # reminder: we want to return a tuple of the date and the benchmark results for that date
-        for benchmark in BENCHMARK_DIRECTORY.iterdir():
-            if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
-                continue
-            results.append(benchmark)
-    else:
-        for benchmark in BENCHMARK_DIRECTORY.iterdir():
-            if not benchmark.is_dir() or not benchmark.name.startswith("bm_"):
-                continue
-            results.append(benchmark)
-    return results
+def _get_benchmarks(test: bool = False) -> Iterator[Path]:
+    bench_dir = TEST_BENCHMARK_DIRECTORY if test else BENCHMARK_DIRECTORY
+    for benchmark_case in bench_dir.iterdir():
+        if not benchmark_case.is_dir() or not benchmark_case.name.startswith("bm_"):
+            continue
+        yield benchmark_case
+
+
+def get_visualizer_setup(
+    test: bool = False,
+) -> Generator[tuple[str, str, list[Benchmark]], None, None]:
+    for benchmark in _get_benchmarks(test=test):
+        results_dir = benchmark / "results"
+        for dates in results_dir.iterdir():
+            date = dates.name
+            date_benchmarks = []
+            for result_file in dates.iterdir():
+                if not result_file.suffix == ".json":
+                    continue
+                bench = Benchmark.from_path(result_file, benchmark.name)
+                date_benchmarks.append(bench)
+            yield benchmark.name, date, sorted(
+                date_benchmarks, key=lambda x: x.python_version[1]
+            )
+
+
+def get_benchmark_setup() -> list[Path]:
+    return list(_get_benchmarks())
 
 
 def setup_benchmark_enviroment(
