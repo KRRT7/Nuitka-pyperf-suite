@@ -9,6 +9,8 @@ from statistics import mean
 from json import load, dump
 from dataclasses import dataclass
 from rich import print
+from rich.align import Align
+from rich.text import Text
 from rich.progress import track
 import platform
 
@@ -17,6 +19,10 @@ NUITKA_VERSIONS = ["nuitka"]
 
 BENCHMARK_DIRECTORY = Path(__file__).parent / "benchmarks"
 TEST_BENCHMARK_DIRECTORY = Path(__file__).parent / "benchmarks_test"
+
+
+def centered_text(text: str) -> Align:
+    return Align.center(Text(text))
 
 
 @dataclass
@@ -54,6 +60,11 @@ class Benchmark:
     def parse_stats(self, stats: dict[str, dict[str, list[float]]]) -> None:
         self.nuitka_stats = Stats.from_dict(stats["nuitka"], "nuitka")
         self.cpython_stats = Stats.from_dict(stats["cpython"], "cpython")
+
+    @property
+    def py_version(self) -> str:
+        major, _min = self.python_version
+        return "{}.{}".format(major, _min)
 
     @classmethod
     def from_path(cls, file_path: Path, benchmark_name: str) -> "Benchmark":
@@ -133,20 +144,19 @@ class Benchmark:
 
         return min(warmup, benchmark)
 
-    def format_stats(self) -> str:
+    def format_stats(self) -> Align:
         nuitka_stats = self.calculate_stats("nuitka")
         cpython_stats = self.calculate_stats("cpython")
 
         if nuitka_stats < cpython_stats:
             difference = (cpython_stats - nuitka_stats) / cpython_stats * 100
-            return f"[green]+{difference:.2f}%[/green]"
+            return Align.center(Text(f"+{difference:.2f}%", style="green"))
         elif nuitka_stats > cpython_stats:
             difference = (nuitka_stats - cpython_stats) / cpython_stats * 100
-            return f"[red]-{difference:.2f}%[/red]"
+            return Align.center(Text(f"-{difference:.2f}%", style="red"))
         else:
             difference = (nuitka_stats - cpython_stats) / cpython_stats * 100
-            # return f"[yellow]{difference:.2f}%[/yellow]"
-            return f"[yellow](no-diff){difference:.2f}%[/yellow]"
+            return Align.center(Text(f"{difference:.2f}%", style="yellow"))
 
     def __repr__(self) -> str:
         return f"{self.benchmark_name} reprd"

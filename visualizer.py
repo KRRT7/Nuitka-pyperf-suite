@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich.align import Align
 from rich.console import Group
 from rich.console import Console
-from Utilities import get_visualizer_setup
+from Utilities import get_visualizer_setup, centered_text
 from rich.terminal_theme import SVG_EXPORT_THEME
 
 console = Console(record=True)
@@ -15,7 +15,7 @@ def build_table() -> Table:
     table.add_column("Version")
     table.add_column("Cpython")
     table.add_column("Nuitka")
-    table.add_column("Difference")
+    table.add_column(centered_text("Diff"))
 
     return table
 
@@ -30,9 +30,9 @@ for name, date, benchmarks in get_visualizer_setup():
 
         table.title = name
         table.add_row(
-            "{}.{}".format(benchmark.python_version[0], benchmark.python_version[1]),
-            f"{cpython_stats:.2f}",
-            f"{nuitka_stats:.2f}",
+            centered_text(benchmark.py_version),
+            centered_text(f"{cpython_stats:.2f}"),
+            centered_text(f"{nuitka_stats:.2f}"),
             benchmark.format_stats(),
         )
     dates.setdefault(date, []).append(table)
