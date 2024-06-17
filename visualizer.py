@@ -43,4 +43,5 @@ for date, tables in dates.items():
     rows.append(Panel(Group(*tables), title=date, expand=False))
 grid.add_row(*rows)
 console.print(Align.center(grid))
-console.save_html("test.html", theme=SVG_EXPORT_THEME)
+# console.save_html("test.html", theme=SVG_EXPORT_THEME)
+console.save_svg("test.svg", theme=SVG_EXPORT_THEME)
