@@ -10,6 +10,7 @@ from dask.distributed import Client, Worker, Scheduler, wait
 from dask import distributed
 
 # import pyperf
+import asyncio
 
 
 def inc(x):
@@ -40,4 +41,4 @@ if __name__ == "__main__":
     # runner.metadata["description"] = "Benchmark dask"
     # runner.bench_async_func("dask", benchmark)
 
-    benchmark()
+    asyncio.run(benchmark())
