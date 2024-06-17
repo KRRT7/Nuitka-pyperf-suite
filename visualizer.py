@@ -1,8 +1,7 @@
 from rich import print
 from rich.table import Table
 from rich.panel import Panel
-
-# from rich.
+from rich.align import Align
 from rich.console import Group
 from rich.console import Console
 from Utilities import get_visualizer_setup
@@ -38,7 +37,10 @@ for name, date, benchmarks in get_visualizer_setup():
         )
     dates.setdefault(date, []).append(table)
 
+grid = Table.grid(expand=True)
+rows = []
 for date, tables in dates.items():
-    console.print(Panel(Group(*tables), title=date, expand=False))
-
+    rows.append(Panel(Group(*tables), title=date, expand=False))
+grid.add_row(*rows)
+console.print(Align.center(grid))
 console.save_html("test.html", theme=SVG_EXPORT_THEME)
