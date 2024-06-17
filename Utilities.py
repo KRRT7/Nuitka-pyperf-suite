@@ -36,13 +36,13 @@ class Stats:
 
 @dataclass
 class Benchmark:
+    python_version: tuple[int, int]
+    benchmark_name: str
     target: str | None = None
     nuitka_version: str | None = None
-    python_version: tuple[int, int] | None = None
     file_json: dict[str, dict[str, list[float]]] | None = None
     nuitka_stats: Stats | None = None
     cpython_stats: Stats | None = None
-    benchmark_name: str = ""
 
     @staticmethod
     def parse_file_name(file_name: str) -> tuple[str, str, tuple[int, int]]:
@@ -51,34 +51,12 @@ class Benchmark:
         python_version_tuple = (int(py_ver_split[0]), int(py_ver_split[1]))
         return target, nuitka_version, python_version_tuple
 
-    # @staticmethod
-    # def parse_stats(stats: dict[str, dict[str, list[float]]]) -> dict[str, Stats]:
     def parse_stats(self, stats: dict[str, dict[str, list[float]]]) -> None:
-        # nuitka_stats = stats["nuitka"]
-        # cpython_stats = stats["cpython"]
-        # return {
-        #     "nuitka": Stats(
-        #         "nuitka",
-        #         nuitka_stats["warmup"],
-        #         nuitka_stats["benchmark"],
-        #     ),
-        #     "cpython": Stats(
-        #         "cpython",
-        #         cpython_stats["warmup"],
-        #         cpython_stats["benchmark"],
-        #     ),
-        # }
         self.nuitka_stats = Stats.from_dict(stats["nuitka"], "nuitka")
         self.cpython_stats = Stats.from_dict(stats["cpython"], "cpython")
 
     @classmethod
-    def from_path(
-        cls, file_path: Path, benchmark_name: str, in_progess: bool = False
-    ) -> "Benchmark":
-        if in_progess:
-            return cls(
-                benchmark_name=benchmark_name,
-            )
+    def from_path(cls, file_path: Path, benchmark_name: str) -> "Benchmark":
 
         if not file_path.stat().st_size > 0:
             raise FileNotFoundError(f"File {file_path} does not exist or is empty")
@@ -332,8 +310,11 @@ def get_visualizer_setup(
             for result_file in dates.iterdir():
                 if not result_file.suffix == ".json":
                     continue
-                bench = Benchmark.from_path(result_file, benchmark.name)
-                date_benchmarks.append(bench)
+                try:
+                    bench = Benchmark.from_path(result_file, benchmark.name)
+                    date_benchmarks.append(bench)
+                except FileNotFoundError:
+                    continue
             yield benchmark.name, date, sorted(
                 date_benchmarks, key=lambda x: x.python_version[1]
             )

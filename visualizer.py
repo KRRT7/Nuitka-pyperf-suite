@@ -30,7 +30,7 @@ for name, date, benchmarks in get_visualizer_setup():
 
         table.title = name
         table.add_row(
-            "{}.{}".format(benchmark.python_version[0], benchmark.python_version[1]),  # type: ignore
+            "{}.{}".format(benchmark.python_version[0], benchmark.python_version[1]),
             f"{cpython_stats:.2f}",
             f"{nuitka_stats:.2f}",
             benchmark.format_stats(),
