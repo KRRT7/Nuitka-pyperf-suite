@@ -338,6 +338,7 @@ def setup_benchmark_enviroment(
     nuitka_version: str,
     requirements_exists: bool,
     python_executable: str,
+    silent: bool = False,
 ) -> None:
     try:
         commands = [
@@ -353,7 +354,10 @@ def setup_benchmark_enviroment(
                 2, f"{python_executable} -m pip install -r requirements.txt"
             )
         for command in commands:
-            res = run(command, stdout=PIPE, stderr=PIPE)
+            if silent:
+                res = run(command, stdout=PIPE, stderr=PIPE)
+            else:
+                res = run(command)
             if res.returncode != 0:
                 print(f"Failed to run command {command}")
                 break

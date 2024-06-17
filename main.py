@@ -61,6 +61,7 @@ if platform.system() == "Windows":
                     nuitka_version,
                     requirements_exists,
                     str(python_executable.resolve()),
+                    silent=False
                 )
                 try:
                     nuitka_benchmark = run_benchmark(
