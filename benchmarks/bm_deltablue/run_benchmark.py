@@ -633,6 +633,6 @@ if __name__ == "__main__":
     # runner = pyperf.Runner()
     # runner.metadata["description"] = "DeltaBlue benchmark"
 
-    n = 100
+    n = 8500
     # runner.bench_func("deltablue", delta_blue, n)
     delta_blue(n)

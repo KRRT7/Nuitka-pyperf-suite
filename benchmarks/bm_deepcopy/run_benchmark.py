@@ -95,4 +95,4 @@ if __name__ == "__main__":
     # runner.bench_time_func("deepcopy_reduce", benchmark_reduce)
     # runner.bench_time_func("deepcopy_memo", benchmark_memo)
     for benchmark in [benchmark, benchmark_reduce, benchmark_memo]:
-        benchmark(10)
+        benchmark(2100)

@@ -34,7 +34,9 @@ if platform.system() == "Windows":
             results_file = results_dir / f"{nuitka_name}-{python_version}.json"
 
             if results_file.exists() and results_file.stat().st_size > 0:
-                print(f"Skipping benchmark {benchmark.name}, because results exist")
+                print(
+                    f"Skipping benchmark {benchmark.name}, because results exist for {benchmark.name} with {python_version}"
+                )
                 continue
 
             if not results_dir.exists():
@@ -61,7 +63,7 @@ if platform.system() == "Windows":
                     nuitka_version,
                     requirements_exists,
                     str(python_executable.resolve()),
-                    silent=False
+                    silent=False,
                 )
                 try:
                     nuitka_benchmark = run_benchmark(
@@ -72,7 +74,9 @@ if platform.system() == "Windows":
                         "Nuitka",
                         nuitka_name,
                     )
-                    bench_result.nuitka_stats = Stats.from_dict(nuitka_benchmark, "nuitka")
+                    bench_result.nuitka_stats = Stats.from_dict(
+                        nuitka_benchmark, "nuitka"
+                    )
 
                     cpython_benchmark = run_benchmark(
                         benchmark,
@@ -92,7 +96,7 @@ if platform.system() == "Windows":
                     print(
                         f"Interrupted running benchmark {benchmark.name} with {python_version}, cleaning up"
                     )
-                    break
+                    raise SystemExit from None
                 except Exception as e:
                     print(
                         f"Failed to run benchmark {benchmark.name} with {python_version}\n{e}"
