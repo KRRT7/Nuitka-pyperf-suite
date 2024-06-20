@@ -314,6 +314,12 @@ def get_visualizer_setup(
 ) -> Generator[tuple[str, str, list[Benchmark]], None, None]:
     for benchmark in _get_benchmarks(test=test):
         results_dir = benchmark / "results"
+        if not results_dir.exists():
+            print(
+                f"Skipping benchmark {benchmark.name}, because {results_dir} does not exist"
+            )
+            continue
+
         for dates in results_dir.iterdir():
             date = dates.name
             date_benchmarks = []
