@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from contextlib import contextmanager
 from time import perf_counter
 import os
-from typing import Any, Iterator, Callable, Literal, Generator
+from typing import Any, Iterator, Callable, Literal, Generator, Iterable
 from pathlib import Path
 import sys
 from subprocess import run, Popen, PIPE
@@ -49,6 +51,7 @@ class Benchmark:
     file_json: dict[str, dict[str, list[float]]] | None = None
     nuitka_stats: Stats | None = None
     cpython_stats: Stats | None = None
+    factory: Benchmark | None = None
 
     @staticmethod
     def parse_file_name(file_name: str) -> tuple[str, str, tuple[int, int]]:
@@ -311,6 +314,8 @@ def _get_benchmarks(test: bool = False) -> Iterator[Path]:
 
 def get_visualizer_setup(
     test: bool = False,
+    # ) -> Generator[tuple[str, str, list[Benchmark], list[Benchmark]], None, None]:
+    # ) -> Generator[tuple[str, str, list[Benchmark]]]:
 ) -> Generator[tuple[str, str, list[Benchmark]], None, None]:
     for benchmark in _get_benchmarks(test=test):
         results_dir = benchmark / "results"
@@ -324,16 +329,21 @@ def get_visualizer_setup(
             date = dates.name
             date_benchmarks = []
             for result_file in dates.iterdir():
-                if not result_file.suffix == ".json":
+                if not result_file.suffix == ".json" or "factory" in result_file.name:
                     continue
                 try:
                     bench = Benchmark.from_path(result_file, benchmark.name)
                     date_benchmarks.append(bench)
+                    factory = result_file.parent / result_file.name.replace(
+                        "stable", "factory"
+                    )
+                    if factory.exists():
+                        bench.factory = Benchmark.from_path(factory, benchmark.name)
+                    else:
+                        print(f"Factory file {factory} does not exist vs {result_file}")
                 except FileNotFoundError:
                     continue
-            yield benchmark.name, date, sorted(
-                date_benchmarks, key=lambda x: x.python_version[1]
-            )
+            yield benchmark.name, date, sorted(date_benchmarks, key=lambda x: x.python_version[1])
 
 
 def get_benchmark_setup() -> list[Path]:

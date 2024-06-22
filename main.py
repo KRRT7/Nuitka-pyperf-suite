@@ -22,7 +22,10 @@ if platform.system() == "Windows":
 
     versions = parse_py_launcher()
 
-    for python_version, nuitka_version in product(versions, ["nuitka"]):
+    for python_version, nuitka_version in product(
+        versions,
+        ["nuitka", '"https://github.com/Nuitka/Nuitka/archive/factory.zip"'],
+    ):
         nuitka_name = (
             "Nuitka-stable" if "github" not in nuitka_version else "Nuitka-factory"
         )
@@ -35,7 +38,7 @@ if platform.system() == "Windows":
 
             if results_file.exists() and results_file.stat().st_size > 0:
                 print(
-                    f"Skipping benchmark {benchmark.name}, because results exist for {benchmark.name} with {python_version}"
+                    f"Skipping benchmark {benchmark.name}, because results exist for {benchmark.name} with {python_version} and {nuitka_name}"
                 )
                 continue
 

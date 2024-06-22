@@ -13,30 +13,37 @@ console = Console(record=True)
 def build_table() -> Table:
     table = Table()
     table.add_column("Version")
-    table.add_column("Cpython")
+    table.add_column("CPython")
     table.add_column("Nuitka")
-    table.add_column(centered_text("Diff"))
+    table.add_column(centered_text("Nuitka-Diff"))
+    table.add_column(centered_text("Factory Diff"))
 
     return table
 
 
 dates: dict[str, list[Table]] = {}
+# for name, date, benchmarks in get_visualizer_setup():
 for name, date, benchmarks in get_visualizer_setup():
     table = build_table()
 
     for benchmark in benchmarks:
         nuitka_stats = benchmark.calculate_stats("nuitka")
         cpython_stats = benchmark.calculate_stats("cpython")
-
+        factory_stats = (
+            benchmark.factory.format_stats()
+            if benchmark.factory
+            else centered_text("N/A")
+        )
         table.title = name
         table.add_row(
             centered_text(benchmark.py_version),
             centered_text(f"{cpython_stats:.2f}"),
             centered_text(f"{nuitka_stats:.2f}"),
             benchmark.format_stats(),
+            factory_stats,
         )
-    dates.setdefault(date, []).append(table)
 
+    dates.setdefault(date, []).append(table)
 if not dates:
     raise SystemExit("No data to visualize")
 
