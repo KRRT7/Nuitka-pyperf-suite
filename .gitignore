@@ -165,3 +165,10 @@ cython_debug/
 # nuitka executable
 *dist/
 *run_benchmark.exe
+
+# Perf suite results
+benchmarks_*/
+# internal sampler
+# sample/
+
+MRE.py
