@@ -90,7 +90,7 @@ if platform.system() == "Windows":
                         python_executable,
                         ITERATIONS,
                         python_version,
-                        "cpython",
+                        "CPython",
                         nuitka_name,
                         "accelerated",
                     )
