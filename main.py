@@ -67,28 +67,31 @@ if platform.system() == "Windows":
                     requirements_exists,
                     str(python_executable.resolve()),
                     silent=False,
+                    compilation_type="accelerated",
                 )
                 try:
+
                     nuitka_benchmark = run_benchmark(
-                        benchmark,
-                        python_executable,
-                        ITERATIONS,
-                        python_version,
-                        "Nuitka",
-                        nuitka_name,
+                        benchmark=benchmark,
+                        iterations=ITERATIONS,
+                        cpython_version=python_version,
+                        type="Nuitka",
+                        nuitka_name=nuitka_name,
+                        nuitka_mode="accelerated",
                     )
                     bench_result.nuitka_stats = Stats.from_dict(
                         nuitka_benchmark, "nuitka"
                     )
 
                     cpython_benchmark = run_benchmark(
-                        benchmark,
-                        python_executable,
-                        ITERATIONS,
-                        python_version,
-                        "CPython",
-                        nuitka_name,
+                        benchmark=benchmark,
+                        iterations=ITERATIONS,
+                        cpython_version=python_version,
+                        type="cpython",
+                        nuitka_name=nuitka_name,
+                        nuitka_mode="accelerated",
                     )
+                    
                     bench_result.cpython_stats = Stats.from_dict(
                         cpython_benchmark, "cpython"
                     )

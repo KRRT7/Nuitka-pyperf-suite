@@ -229,20 +229,25 @@ def create_venv_with_version(version: str) -> Path:
 
 def run_benchmark(
     benchmark: Path,
-    python_executable: Path,
     iterations: int,
     cpython_version: str,
     type: str,
     nuitka_name: str,
+    nuitka_mode: Literal["onefile", "standalone", "accelerated"] = "onefile",
 ) -> dict[str, list[float]]:
     local_results: dict[str, list[float]] = {
         "warmup": [],
         "benchmark": [],
     }
+
+    CWD = Path(os.getcwd())
+    
     run_command = {
-        "Nuitka": Path(os.getcwd()) / "run_benchmark.dist/run_benchmark.exe",
-        "CPython": [python_executable, "run_benchmark.py"],
+        "standalone": CWD / "run_benchmark.dist/run_benchmark.exe",
+        "accelerated": CWD / "run_benchmark.dist/run_benchmark.cmd",
+        "onefile": CWD / "run_benchmark.dist/run_benchmark.exe"
     }
+
     description_dict = {
         "Nuitka": f"{benchmark.name} with {type} | Nuitka Version: {nuitka_name} ({cpython_version})",
         "CPython": f"{benchmark.name} with {type} | Python Version: {cpython_version}",
@@ -257,7 +262,7 @@ def run_benchmark(
             res = run(run_command[type])  # type: ignore
             if res.returncode != 0:
                 raise RuntimeError(
-                    f"Failed to run benchmark {benchmark.name} due to {res.stderr}"
+                    f"Failed to run benchmark {benchmark.name} due to {res.stderr!r}"
                 )
 
         local_results["warmup"].append(timer.time_taken)
@@ -343,7 +348,9 @@ def get_visualizer_setup(
                         print(f"Factory file {factory} does not exist vs {result_file}")
                 except FileNotFoundError:
                     continue
-            yield benchmark.name, date, sorted(date_benchmarks, key=lambda x: x.python_version[1])
+            yield benchmark.name, date, sorted(
+                date_benchmarks, key=lambda x: x.python_version[1]
+            )
 
 
 def get_benchmark_setup() -> list[Path]:
@@ -355,15 +362,18 @@ def setup_benchmark_enviroment(
     requirements_exists: bool,
     python_executable: str,
     silent: bool = False,
+    compilation_type: Literal["onefile", "standalone", "accelerated"] = "onefile",
 ) -> None:
     try:
+        if compilation_type == "accelerated":
+            cmd = " "
+        else:
+            cmd = f"--{compilation_type} "
+
         commands = [
             f"{python_executable} --version",
-            f"{python_executable} -m pip install --upgrade pip setuptools wheel",
-            f"{python_executable} -m pip install {nuitka_version}",
-            f"{python_executable} -m pip install ordered-set",
-            f"{python_executable} -m pip install appdirs",
-            f"{python_executable} -m nuitka --standalone --remove-output run_benchmark.py",
+            f"{python_executable} -m pip install --upgrade pip setuptools wheel {nuitka_version} ordered-set appdirs",
+            f"{python_executable} -m nuitka --output-dir=run_benchmark.dist {cmd}run_benchmark.py",
         ]
         if requirements_exists:
             commands.insert(
