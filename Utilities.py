@@ -229,11 +229,12 @@ def create_venv_with_version(version: str) -> Path:
 
 def run_benchmark(
     benchmark: Path,
+    python_executable: Path,
     iterations: int,
     cpython_version: str,
     type: str,
     nuitka_name: str,
-    nuitka_mode: Literal["onefile", "standalone", "accelerated"] = "onefile",
+    compilation_type: Literal["onefile", "standalone", "accelerated"] = "onefile",
 ) -> dict[str, list[float]]:
     local_results: dict[str, list[float]] = {
         "warmup": [],
@@ -241,11 +242,15 @@ def run_benchmark(
     }
 
     CWD = Path(os.getcwd())
-    
-    run_command = {
+
+    comp_types = {
         "standalone": CWD / "run_benchmark.dist/run_benchmark.exe",
         "accelerated": CWD / "run_benchmark.dist/run_benchmark.cmd",
         "onefile": CWD / "run_benchmark.dist/run_benchmark.exe"
+    }
+    run_command = {
+        "Nuitka": comp_types[compilation_type],
+        "CPython": [python_executable, "run_benchmark.py"],
     }
 
     description_dict = {

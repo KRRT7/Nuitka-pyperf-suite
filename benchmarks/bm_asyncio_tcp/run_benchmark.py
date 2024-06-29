@@ -15,8 +15,10 @@ CHUNK_SIZE = 1024**2 * 10 // 4
 # Taken from CPython's test suite
 if "__compiled__" in globals():
     # This is a workaround for nuitka, which sets __compiled__ to True
-    SSL_CERT = Path(__file__).parent.parent / "ssl_cert.pem"
-    SSL_KEY = Path(__file__).parent.parent / "ssl_key.pem"
+    # SSL_CERT = Path(__file__).parent.parent / "ssl_cert.pem"
+    # SSL_KEY = Path(__file__).parent.parent / "ssl_key.pem"
+    SSL_CERT = Path(__file__).parent / "ssl_cert.pem"
+    SSL_KEY = Path(__file__).parent / "ssl_key.pem"
 else:
     SSL_CERT = Path(__file__).parent / "ssl_cert.pem"
     SSL_KEY = Path(__file__).parent / "ssl_key.pem"
