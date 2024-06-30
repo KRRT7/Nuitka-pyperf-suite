@@ -22,7 +22,6 @@ def build_table() -> Table:
 
 
 dates: dict[str, list[Table]] = {}
-# for name, date, benchmarks in get_visualizer_setup():
 for name, date, benchmarks in get_visualizer_setup():
     table = build_table()
 

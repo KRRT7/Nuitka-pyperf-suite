@@ -246,7 +246,7 @@ def run_benchmark(
     comp_types = {
         "standalone": CWD / "run_benchmark.dist/run_benchmark.exe",
         "accelerated": CWD / "run_benchmark.dist/run_benchmark.cmd",
-        "onefile": CWD / "run_benchmark.dist/run_benchmark.exe"
+        "onefile": CWD / "run_benchmark.dist/run_benchmark.exe",
     }
     run_command = {
         "Nuitka": comp_types[compilation_type],
@@ -371,14 +371,14 @@ def setup_benchmark_enviroment(
 ) -> None:
     try:
         if compilation_type == "accelerated":
-            cmd = " "
+            cmd = "--pgo --lto=yes"
         else:
-            cmd = f"--{compilation_type} "
+            cmd = f"--{compilation_type}"
 
         commands = [
             f"{python_executable} --version",
             f"{python_executable} -m pip install --upgrade pip setuptools wheel {nuitka_version} ordered-set appdirs",
-            f"{python_executable} -m nuitka --output-dir=run_benchmark.dist {cmd}run_benchmark.py",
+            f"{python_executable} -m nuitka --output-dir=run_benchmark.dist {cmd} run_benchmark.py",
         ]
         if requirements_exists:
             commands.insert(
